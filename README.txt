@@ -11,5 +11,5 @@ python main.py
 
 Code structure:
 twitterapi.py -- a wrapper that captures the real-time Twitter stream within a geographic bounding box.
-server.py -- a flask server that provides web services.
+server.py -- a flask server that provides web services and stores twitter and entities. A twitter api instance is created in the server class.
 templates/client.html -- a front end interface for workers to tag entities in Twitter messages.
