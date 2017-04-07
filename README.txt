@@ -7,7 +7,7 @@ External libraries required:
 Tweepy
 
 Instruction:
-python main.py
+python server.py
 
 Code structure:
 twitterapi.py -- a wrapper that captures the real-time Twitter stream within a geographic bounding box.
