@@ -1,4 +1,4 @@
-A course project for Crowd-Powered Systems
+A course project for Crowd-Powered Systems (in progress)
 
 Team member:
 Jiawei Zhang and Jianqiao Liu
