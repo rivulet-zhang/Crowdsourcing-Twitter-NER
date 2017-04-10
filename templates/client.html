@@ -1,11 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Twitter NER</title>
+<title>Crowdsourcing Twitter NER</title>
+  <meta charset="utf-8">
+  <link  href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
+  <link  href="{{ url_for('static', filename='jquery-ui.css') }}" rel="stylesheet">
+  <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+  <script src="{{ url_for('static', filename='constant.js') }}"></script>
+  <script src="{{ url_for('static', filename='jquery-ui.js') }}"></script>
+  
+  <script type="text/javascript">
+  	// get a tweet, entity type: org -> organization, psn -> person, loc -> location
+  	var tweet = {{ tweet | tojson }};
+  	var tweet_styling = styling_tweet(tweet);
+
+	// tweet['entity'] = []
+	// tweet['entity'].append({'type':'org', 'term':'Purdue Univeristy', 'isAuto':True})
+  	function styling_tweet(tweet){
+
+  		var text_html = tweet['text'];
+
+  		tweet['entity'].forEach(function(entity){
+  			var s = text_html.search(entity.term);
+  			if(s < 0 || s >= text_html.length)
+  				console.error("error parsing entity");
+  			else{
+  				var token = "<b><font color='" + ENTITY_COLOR[entity.type] + "'>" + entity.term + "</font></b>";
+  				text_html = text_html.slice(0, s) + token + text_html.slice(s+entity.term.length);
+  			}
+  		});
+
+  		return text_html;
+  	}
+
+  	$(document).ready(function(){
+  		$("#content").html(tweet_styling);
+  	});
+
+  </script>
 </head>
+
 <body>
 
-<h1>Twitter NER -- Test Page</h1>
+<div>
+	<h1 align="center">Crowdsourcing Twitter NER</h1>
+</div>
+
+<div class="tweet_view">
+	<h3>Tweet View</h3>
+	<div class="tweet_content">
+		<p id="content"></p>
+	</div>
+</div>
+
+<div class="entity_view">
+	<h3>Entity View</h3>
+</div>
 
 </body>
 </html>
