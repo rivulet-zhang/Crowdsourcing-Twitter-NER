@@ -36,6 +36,33 @@ h1, h2, h3, h4, p {
     margin-left: 10px;
 }
 
+.op_panel {
+    /*border:1px solid black;*/
+    width: 480px;
+    height: 150px;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    float: left;
+    margin-left: 10px;   
+}
+
+.result {
+    border:1px solid black;
+    width: 220px;
+    height: 180px;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    float: left;
+    margin-left: 10px;   
+}
+
+.addNew {
+    border:1px solid black;
+    width: 220px;
+    height: 180px;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    float: left;
+    margin-left: 10px;   
+}
+
 .entity_view {
     border:1px solid black;
     width: 456px;
@@ -43,4 +70,28 @@ h1, h2, h3, h4, p {
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 30px;
+}
+
+input {
+  display: inline;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+input[type="text"] {
+    width: 100px;
+    height: 10px;
+}
+
+select {
+    margin-left: 15px;
+}
+
+button {
+    width: 60px;
+    height: 30px;
+    float: right;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-size: 18px;
+    margin-right: 10px;
 }
