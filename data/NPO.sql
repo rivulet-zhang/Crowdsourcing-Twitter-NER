@@ -1,5 +1,5 @@
 create table
-suggested_vehicle
+NPO
 (
 	id 			integer primary key,
 	name    	text      not null,
