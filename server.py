@@ -1,7 +1,7 @@
 # (c) Copyright 2016  Jiawei Zhang and Jianqiao Liu - MIT License
 from __future__ import division, unicode_literals 
 import flask
-from twitterapi import TwitterAPI
+# from twitterapi import TwitterAPI
 
 import threading
 from threading import Thread
@@ -14,29 +14,43 @@ app = flask.Flask(__name__, static_url_path='/static') # Create application
 tweetDB = {}
 
 # start twitter api to collect realtime tweets
-def start_twitter_api():
-	api = TwitterAPI()
-	api.stream(tweetDB)
+# def start_twitter_api():
+# 	api = TwitterAPI()
+# 	api.stream(tweetDB)
 
 
 # entity type: org -> organization, psn -> person, loc -> location
 def test_add_tweet():
-	tweet = {}
-	tweet['id'] = 1234567890
-	tweet['user'] = 'jiawei'
-	tweet['time'] = datetime.datetime.now()
-	tweet['text'] = 'I study at Purdue University. The president of the university is Mitch Daniels.'
-	tweet['entity'] = []
-	tweet['entity'].append({'type':'org', 'term':'Purdue University', 'isAuto':True})
-	tweet['entity'].append({'type':'psn', 'term':'Mitch Daniels', 'isAuto':True})
-	tweetDB[tweet['id']] = tweet
+	tweets = []
+	t1 = {}
+	t1['id'] = 100
+	t1['user'] = 'U1'
+	t1['time'] = datetime.datetime.now()
+	t1['text'] = 'Hey there! I study at Purdue University.'
+	t1['entity'] = []
+	t1['entity'].append({'type':'org', 'term':'Purdue University', 'isAuto':True})
+
+	t2 = {}
+	t2['id'] = 101
+	t2['user'] = 'U2'
+	t2['time'] = datetime.datetime.now()
+	t2['text'] = 'BoilerUp!'
+	t2['entity'] = []
+
+	tweets.append(t1);
+	tweets.append(t2);
+
+	conversationId = 1
+
+	tweetDB[conversationId] = tweets
+
 
 # # ajax call initiated by client to get a new tweet from server
 # @app.route('/gettweet', methods=['GET'])
 # def getTweet():
 # 	return ""
 
-def get_a_tweet():
+def get_a_conversation():
 	tweets = list(tweetDB.values());
 	if len(tweets) <= 0:
 		print("not enough tweets")
@@ -47,8 +61,8 @@ def get_a_tweet():
 @app.route('/')
 def client():
 
-	tweet = get_a_tweet();
-	return flask.render_template("client.html", tweet=tweet)
+	tweets = get_a_conversation();
+	return flask.render_template("client.html", tweets=tweets)
 
 if __name__=="__main__":
 	# run server and twitter api concurrently
