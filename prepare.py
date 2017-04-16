@@ -15,10 +15,10 @@ app.config.from_object(config)                         # Currently has no real e
 def reset_NPO_DB():
 		# GOOD:
 		db.query("DELETE FROM NPO where id > 0");
-		db.query("INSERT INTO NPO (name, dest) values (?, ?)", ("Donald Trump", "None"));
-		db.query("INSERT INTO NPO (name, dest) values (?, ?)", ("Purdue University", "None"));
-		db.query("INSERT INTO NPO (name, dest) values (?, ?)", ("Mitch Daniels", "None"));
-		db.query("INSERT INTO NPO (name, dest) values (?, ?)", ("Star Craft", "None"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Donald Trump", "Person", "https://en.wikipedia.org/wiki/Donald_Trump", "None"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "Place", "https://en.wikipedia.org/wiki/Purdue_University", "None"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Mitch Daniels", "Person", "https://en.wikipedia.org/wiki/Mitch_Daniels", "None"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Star Craft", "Object", "https://en.wikipedia.org/wiki/StarCraft", "None"));
 
 def reset_ETY_DB():
 		# GOOD:
@@ -43,21 +43,20 @@ def reset_TWEETS_DB():
 			                         	"We come from Purdue University! We are Boiler Makers!",  
 			                         	"None"));
 
-if __name__=="__main__":
+#if __name__=="__main__":
+def test_DB():
 	with app.app_context():
-	# run server and twitter api concurrently
-	# Thread(target = start_twitter_api).start()
-#	test_add_tweet()
 		reset_NPO_DB()
 		reset_ETY_DB()
 		reset_TWEETS_DB()
+
 		rows = db.query("select * from NPO")
 		print rows
 		rows = db.query("select * from ETY")
 		print rows
 		rows = db.query("select * from TWEETS")
 		print rows
-	#	app.run(host="127.0.0.1", port=8080, debug=False, use_debugger=False, use_evalex=False)
+		
 		print("All is well!")
 
 

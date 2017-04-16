@@ -1,6 +1,7 @@
 # (c) Copyright 2016  Jiawei Zhang and Jianqiao Liu - MIT License
 from __future__ import division, unicode_literals 
 import flask
+import prepare
 #from twitterapi import TwitterAPI
 
 import threading
@@ -54,4 +55,5 @@ if __name__=="__main__":
 	# run server and twitter api concurrently
 	# Thread(target = start_twitter_api).start()
 	test_add_tweet()
+	prepare.test_DB()
 	app.run(host="127.0.0.1", port=8080, debug=False, use_debugger=False, use_evalex=False)

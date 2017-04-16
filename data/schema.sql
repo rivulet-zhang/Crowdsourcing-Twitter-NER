@@ -15,6 +15,8 @@ NPO
 (
 	id 			integer primary key,
 	name    	text      not null,
+	class    	text      not null,
+	description text      not null,
 	dest    	text      not null
 );
 
