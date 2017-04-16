@@ -6,35 +6,51 @@
   <link  href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
   <link  href="{{ url_for('static', filename='jquery-ui.css') }}" rel="stylesheet">
   <script src="{{ url_for('static', filename='jquery.js') }}"></script>
-  <script src="{{ url_for('static', filename='constant.js') }}"></script>
   <script src="{{ url_for('static', filename='jquery-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='constant.js') }}"></script>
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
   
   <script type="text/javascript">
   	// get a tweet, entity type: org -> organization, psn -> person, loc -> location
-  	var tweet = {{ tweet | tojson }};
-  	var tweet_styling = styling_tweet(tweet);
+  	var tweets = {{ tweets | tojson }};
 
-	// tweet['entity'] = []
-	// tweet['entity'].append({'type':'org', 'term':'Purdue Univeristy', 'isAuto':True})
-  	function styling_tweet(tweet){
+  	var tweets_tagged = tweets.map(function(tweet){
+      return styling_tweet(tweet);
+    });
 
-  		var text_html = tweet['text'];
+    // userMode: 0 -> entity recognition; 1 -> entity linking
+    var userMode = 0;
 
-  		tweet['entity'].forEach(function(entity){
-  			var s = text_html.search(entity.term);
-  			if(s < 0 || s >= text_html.length)
-  				console.error("error parsing entity");
-  			else{
-  				var token = "<b><font color='" + ENTITY_COLOR[entity.type] + "'>" + entity.term + "</font></b>";
-  				text_html = text_html.slice(0, s) + token + text_html.slice(s+entity.term.length);
-  			}
-  		});
-
-  		return text_html;
-  	}
-
+    //DOM initialization
   	$(document).ready(function(){
-  		$("#content").html(tweet_styling);
+
+      //initialize event handler
+      $('input:radio[name="mode"]').change(function(){
+        if ($(this).val() == 'recognize') {
+          userMode = 0;
+          $('#recView').css('display','block');
+          $('#linkView').css('display','none');
+        }
+        else{
+          userMode = 1;
+          $('#recView').css('display','none');
+          $('#linkView').css('display','block');
+        }
+      });
+
+      //styling dropdown list;
+      (function(){
+        var select = document.getElementById('selectType');
+        for(var i = 0; i < select.options.length; i++) {
+            var c = get_entity_color(select.options[i].value);
+            select.options[i].style.color = c;
+        }
+      })();
+
+      //polulate tweet content
+      tweets_tagged.forEach(function(tweet){
+        $("#content").append("<p>"+tweet['user']+": "+tweet['text_tagged']+"</p>");
+      });
   	});
 
   </script>
@@ -48,9 +64,58 @@
 
 <div class="tweet_view">
 	<h3>Tweet View</h3>
-	<div class="tweet_content">
-		<p id="content"></p>
-	</div>
+	
+  <!-- tweet display-->
+  <div id="content" class="tweet_content"></div>
+
+  <!-- mode display-->
+  <div>
+    <input type="radio" name="mode" value="recognize" checked>Recognize entities
+    <input type="radio" name="mode" value="link">Link entities
+  </div>
+
+  <!-- operation panel display-->
+  <div id="recView" class="op_panel" style="display: block;">
+
+    <div style="float: left;">
+      <p><b>Current entities:</b></p>
+      <div class="result"></div>
+    </div>
+
+    <div style="float: left; margin-left: 10px;">
+      <p><b>Add new entity:</b></p>
+      <div class="addNew">
+        <p>Entity: <input type="text" name="newEntity"><br><br></p>
+        <p>Type: <select id="selectType">
+                  <option selected="true" disabled="disabled">Choose type</option>
+                  <option value="org"><b>Organization</b></option>
+                  <option value="loc"><b>Location</b></option>
+                  <option value="psn"><b>Person</b></option>
+                </select>
+        </p>
+        <br><p><button type="button">Add</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="linkView" class="op_panel" style="display: none;">
+
+    <div style="float: left;">
+      <p><b>Current linkage:</b></p>
+      <div class="result"></div>
+    </div>
+
+    <div style="float: left; margin-left: 10px;">
+      <p><b>Add new linkage:</b></p>
+      <div class="addNew">
+        <p>Entity 1: <input type="text" name="entity1"></p>
+        <p>Entity 2: <input type="text" name="entity2"></p>
+        <br><p><button type="button" style="float: right;">Add</button></p>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
 <div class="entity_view">
