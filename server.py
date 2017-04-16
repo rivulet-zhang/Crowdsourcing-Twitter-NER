@@ -1,7 +1,7 @@
 # (c) Copyright 2016  Jiawei Zhang and Jianqiao Liu - MIT License
 from __future__ import division, unicode_literals 
 import flask
-from twitterapi import TwitterAPI
+#from twitterapi import TwitterAPI
 
 import threading
 from threading import Thread
@@ -14,9 +14,9 @@ app = flask.Flask(__name__, static_url_path='/static') # Create application
 tweetDB = {}
 
 # start twitter api to collect realtime tweets
-def start_twitter_api():
-	api = TwitterAPI()
-	api.stream(tweetDB)
+#def start_twitter_api():
+#	api = TwitterAPI()
+#	api.stream(tweetDB)
 
 
 # entity type: org -> organization, psn -> person, loc -> location
