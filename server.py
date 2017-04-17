@@ -29,7 +29,7 @@ def test_add_tweet():
 	t1['time'] = datetime.datetime.now()
 	t1['text'] = 'Hey there! I study at Purdue University.'
 	t1['entity'] = []
-	t1['entity'].append({'type':'org', 'term':'Purdue University', 'isAuto':True})
+	t1['entity'].append({'type':'org', 'term':'Purdue University', 'isAuto':True, 'comment':''})
 
 	t2 = {}
 	t2['id'] = 101
@@ -51,19 +51,37 @@ def test_add_tweet():
 # def getTweet():
 # 	return ""
 
-def get_a_conversation():
+def get_conversation():
 	tweets = list(tweetDB.values());
 	if len(tweets) <= 0:
 		print("not enough tweets")
 	else:
 		return tweets[0]
 
+def get_link(tweets):
+	return [{'term1':'Purdue University','term2':'BoilerUp','comment':''}]
+
 # default page for client html
 @app.route('/')
 def client():
 
-	tweets = get_a_conversation();
-	return flask.render_template("client.html", tweets=tweets)
+	tweets = get_conversation();
+	links = get_link(tweets)
+	return flask.render_template("client.html", tweets=tweets, links=links)
+
+@app.route('/submit', methods=['POST'])
+def submit():
+
+	rst = flask.request.form
+
+	tweets = rst['tweetsResult']
+	links = rst['linksResult']
+
+	print("tweets: ", tweets)
+	print("links: ", links)
+
+	return "Answer received"
+
 
 if __name__=="__main__":
 	# run server and twitter api concurrently
