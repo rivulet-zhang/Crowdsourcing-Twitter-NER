@@ -21,7 +21,7 @@ h1, h2, h3, h4, p {
 .tweet_view {
     border:1px solid black;
     width: 512px;
-    height: 512px;
+    height: 640px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 10px;
@@ -34,12 +34,22 @@ h1, h2, h3, h4, p {
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 10px;
+    overflow: scroll;
 }
 
 .op_panel {
     /*border:1px solid black;*/
     width: 480px;
-    height: 150px;
+    height: 360px;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    float: left;
+    margin-left: 10px;
+}
+
+.submit {
+    /*border:1px solid black;*/
+    width: 480px;
+    height: 15px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 10px;   
@@ -48,7 +58,7 @@ h1, h2, h3, h4, p {
 .result {
     border:1px solid black;
     width: 220px;
-    height: 180px;
+    height: 300px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 10px;   
@@ -57,7 +67,7 @@ h1, h2, h3, h4, p {
 .addNew {
     border:1px solid black;
     width: 220px;
-    height: 180px;
+    height: 300px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 10px;   
@@ -66,7 +76,7 @@ h1, h2, h3, h4, p {
 .entity_view {
     border:1px solid black;
     width: 456px;
-    height: 512px;
+    height: 640px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 30px;
@@ -88,10 +98,19 @@ select {
 }
 
 button {
-    width: 60px;
+    width: 70px;
     height: 30px;
     float: right;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     font-size: 18px;
     margin-right: 10px;
+}
+
+input[type=submit] {
+    width: 80px;
+    height: 50px;
+    float: right;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-size: 18px;
+    margin-right: 10px;   
 }
