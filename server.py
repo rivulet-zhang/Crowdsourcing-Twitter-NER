@@ -3,6 +3,8 @@ from __future__ import division, unicode_literals
 import flask
 import prepare
 #from twitterapi import TwitterAPI
+import json
+import pdb
 
 import threading
 from threading import Thread
@@ -74,8 +76,8 @@ def submit():
 
 	rst = flask.request.form
 
-	tweets = rst['tweetsResult']
-	links = rst['linksResult']
+	tweets = json.loads(rst['tweetsResult'])['tweets']
+	links = json.loads(rst['linksResult'])['links']
 
 	print("tweets: ", tweets)
 	print("links: ", links)
