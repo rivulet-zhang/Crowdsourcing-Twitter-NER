@@ -29,3 +29,20 @@ When we detect a entity from tweets, we first check whether its include in the E
 2. If not, the worker should create a record in NPO (DES). Then the worker should search through the NPO table with the most well-known name of the entity. This part could potentially be done through auto-complete or some smarter method.
 	1. If there is such record in NPO (SRC), the worker should add the new record in ETY (DES) into SRC's list, and set DES's source as SRC (DES.source <- SRC).
 	2. Otherwise, the worker also need to create a record in NPO (the SRC). The SRC has a name and a description. We strongly recommend the worker to use the most widely known name as SRC's name. The SRC's name is the unique keyword we define a person/place/object in our system. For current step, we can not avoid the duplication in NPO by machine, but we may potentially use crowd source to do this. The description of SRC could be a link to a Wikipedia webpage, or a piece of words written by the user.
+
+Server-Client communication interface:
+
+server -> client: (client() in server.py)
+'tweets' contains a list of tweets
+'links' contains a list of word mapping (can be empty)
+
+client -> server: (submit() in server.py)
+tweets and links are the same format as described above.
+
+sample format:
+
+tweets = 
+ [{'user': 'U1', 'time': 'Mon, 17 Apr 2017 00:37:57 GMT', 'text': 'Hey there! I study at Purdue University.', 'id': 100, 'entity': [{'term': 'Purdue University', 'comment': '', 'isAuto': True, 'type': 'org'}]}, {'user': 'U2', 'time': 'Mon, 17 Apr 2017 00:37:57 GMT', 'text': 'BoilerUp!', 'id': 101, 'entity': []}]
+
+links =
+[{'term1': 'Purdue University', 'term2': 'BoilerUp', 'comment': ''}]
