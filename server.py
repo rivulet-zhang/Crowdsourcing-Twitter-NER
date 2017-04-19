@@ -25,6 +25,8 @@ _g_conversation_counter = 0
 # 	api = TwitterAPI()
 # 	api.stream(tweetDB)
 
+entity_abbr = {'PERSON':'psn', 'ORGANIZATION':'org', 'LOCATION':'loc'}
+
 def extract_entity_names(t):
     entity_names = []
 
@@ -32,7 +34,7 @@ def extract_entity_names(t):
 #    	print "%s  --> %s"%(t, t.label())
         if t.label() == 'PERSON' or t.label() == 'ORGANIZATION' or t.label() == 'LOCATION':
             # pdb.set_trace()
-            entity_names.append([' '.join([child[0] for child in t]), t.label()])
+            entity_names.append({'term':' '.join([child[0] for child in t]), 'type':entity_abbr[t.label()], 'isAuto':True, 'comment':''})
         else:
             for child in t:
                 entity_names.extend(extract_entity_names(child))
@@ -64,7 +66,7 @@ def test_add_tweet():
 	conversationId = 1
 
 	tweetDB[conversationId] = tweets
-	print type(t2['entity'])
+	# print(type(t2['entity']))
 
 
 # # ajax call initiated by client to get a new tweet from server
@@ -74,8 +76,8 @@ def test_add_tweet():
 
 def get_conversation():
 	tweets = list(tweetDB.values());
-	print "All is well"
-	print tweets[0]
+	print("All is well")
+	print(tweets[0])
 	if len(tweets) <= 0:
 		print("not enough tweets")
 	else:
@@ -105,13 +107,13 @@ def get_conversation_from_DB():
 		    entity_names.extend(extract_entity_names(tree))
 
 		t['entity'] = entity_names
-		print entity_names
+		# print(entity_names)
 		tweets.append(t)
 	return tweets
 
 def get_link(tweets):
-	print tweets
-	print type(tweets)
+	# print(tweets)
+	# print(type(tweets))
 	return [{'term1':'Purdue University','term2':'BoilerUp','comment':''}]
 
 def get_link_from_DB(tweets):
@@ -119,20 +121,30 @@ def get_link_from_DB(tweets):
 	for tweet in tweets:
 		if len(tweet['entity']) != 0:
 			for entity in tweet['entity']:
-				print entity[0]
-				row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity[0])
-				if len(row) != 0:
-					links.append(row)
-	print links
+				# print(entity[0])
+				row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity['term'])
+				if len(row) != 0 and len(row[0]['dest']) > 0:
+					# dest "word1,word2,word3"
+					dests = [x.strip() for x in row[0]['dest'].split(',')]
+					for dest in dests:
+						_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % dest)
+						if len(_row) != 0:
+							comment = {'user':_row[0]['user'], 'context':_row[0]['context'], 'comment':_row[0]['comment']}
+							comment = json.dumps(comment)
+							links.append({'npo':entity['term'],'ety':dest,'comment':comment})
+
+	print(links)
 	return links
 
 # default page for client html
 @app.route('/')
 def client():
 
-	tweets = get_conversation();
-#	tweets = get_conversion_from_DB();
-	links = get_link(tweets)
+	# tweets = get_conversation();
+	tweets = get_conversation_from_DB();
+	print(tweets)
+	# links = get_link(tweets)
+	links = get_link_from_DB(tweets)
 	return flask.render_template("client.html", tweets=tweets, links=links)
 
 @app.route('/submit', methods=['POST'])
@@ -141,10 +153,10 @@ def submit():
 	rst = flask.request.form
 
 	tweets = json.loads(rst['tweetsResult'])['tweets']
-	links = json.loads(rst['linksResult'])['links']
+	# links = json.loads(rst['linksResult'])['links']
 
 	print("tweets: ", tweets)
-	print("links: ", links)
+	# print("links: ", links)
 
 	return "Answer received"
 
@@ -153,7 +165,7 @@ if __name__=="__main__":
 	with app.app_context():
 		# run server and twitter api concurrently
 		# Thread(target = start_twitter_api).start()
-		test_add_tweet()
+		# test_add_tweet()
 		prepare.test_DB()
 #		get_conversation()
 		tweets = get_conversation_from_DB()
