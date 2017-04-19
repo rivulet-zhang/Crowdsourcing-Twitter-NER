@@ -23,25 +23,52 @@ def reset_NPO_DB():
 def reset_ETY_DB():
 		# GOOD:
 		db.query("DELETE FROM ETY where id > 0");
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, isAuto) values (?, ?, ?, ?, ?, ?)", ("45", "Donald Trump", "alex", "201704010100", "is 45 a good man?", "False"));
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, isAuto) values (?, ?, ?, ?, ?, ?)", ("DT", "Donald Trump", "alex", "201704010101", "is DT a good man?", "False"));
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, isAuto) values (?, ?, ?, ?, ?, ?)", ("Orange Julius", "Donald Trump", "alex", "201704010102", "is Orange Julius a good man?", "False"));
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, isAuto) values (?, ?, ?, ?, ?, ?)", ("Boiler Maker", "Purdue University", "alex", "201704010103", 
-			"We come from Purdue University! We are Boiler Makers!", "False"));
+		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto) values (?, ?, ?, ?, ?, ?, ?)", ("45", "Donald Trump", "alex", "201704010100", "is 45 a good man?", 0, "False"));
+		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto) values (?, ?, ?, ?, ?, ?, ?)", ("DT", "Donald Trump", "alex", "201704010101", "is DT a good man?", 0, "False"));
+		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto) values (?, ?, ?, ?, ?, ?, ?)", ("Orange Julius", "Donald Trump", "alex", "201704010102", "is Orange Julius a good man?", 0, "False"));
+		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto) values (?, ?, ?, ?, ?, ?, ?)", ("Boiler Maker", "Purdue University", "alex", "201704010103", 
+			"We come from Purdue University! We are Boiler Makers!", 0, "False"));
 
 def reset_TWEETS_DB():
 		# GOOD:
 		db.query("DELETE FROM TWEETS where id > 0");
-		db.query("INSERT INTO TWEETS (user, tweet_time, content, entities) values (?, ?, ?, ?)", 
+#Conversation 1
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
 			                         ("jiawei", 
 			                         	datetime.datetime.now(), 
-			                         	"I study at Purdue University. The president of the university is Mitch Daniels.", 
-			                         	"None"));
-		db.query("INSERT INTO TWEETS (user, tweet_time, content, entities) values (?, ?, ?, ?)", 
+			                         	"Hi, I study at Purdue University.",
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
 			                         ("jianqiao", 
 			                         	datetime.datetime.now(), 
-			                         	"We come from Purdue University! We are Boiler Makers!",  
-			                         	"None"));
+			                         	"Boilerup! Is it in Indiana?",
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("jiawei", 
+			                         	datetime.datetime.now(), 
+			                         	"Yup, the Hoosier State.", 
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("jianqiao", 
+			                         	datetime.datetime.now(), 
+			                         	"Have you ever seen the RV-1 of your president?",  
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("jiawei", 
+			                         	datetime.datetime.now(), 
+			                         	"Sure, that's a very fancy RV!", 
+			                         	1));
+#Conversation 2
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("A", 
+			                         	datetime.datetime.now(), 
+			                         	"I cannot believe 45 has won the election!",
+			                         	2));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("B", 
+			                         	datetime.datetime.now(), 
+			                         	"Neither I. Just look at what these rednecks do!",  
+			                         	2));
 
 #if __name__=="__main__":
 def test_DB():
@@ -50,12 +77,12 @@ def test_DB():
 		reset_ETY_DB()
 		reset_TWEETS_DB()
 
-		rows = db.query("select * from NPO")
-		print rows
-		rows = db.query("select * from ETY")
-		print rows
-		rows = db.query("select * from TWEETS")
-		print rows
+#		rows = db.query("select * from NPO")
+#		print rows
+#		rows = db.query("select * from ETY")
+#		print rows
+#		rows = db.query("select * from TWEETS")
+#		print rows
 		
 		print("All is well!")
 

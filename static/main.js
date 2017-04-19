@@ -4,7 +4,7 @@
 // tweet['entity'].append({'type':'org', 'term':'Purdue Univeristy', 'isAuto':True})
 function styling_tweet_entity(tweet){
 
-	var text_html = tweet['text'];
+	var text_html = tweet['content'];
 
 	tweet['entity'].forEach(function(entity){
 		var s = text_html.toLowerCase().search(entity.term.toLowerCase());
@@ -31,7 +31,7 @@ function add_entity_in_tweets(tweets, term, type, comment){
 
   tweets.forEach(function(tweet){
 
-    if(tweet['text'].toLowerCase().indexOf(term.toLowerCase()) !== -1){
+    if(tweet['content'].toLowerCase().indexOf(term.toLowerCase()) !== -1){
       tweet.entity.push({'type':type, 'term':term, 'isAuto':false, 'comment':comment});
     }
 
@@ -45,7 +45,7 @@ function check_term_exist_in_tweets(tweets, term){
 
     var flag = false;
     tweets.forEach(function(tweet){
-      if(tweet['text'].toLowerCase().indexOf(term.toLowerCase()) !== -1){
+      if(tweet['content'].toLowerCase().indexOf(term.toLowerCase()) !== -1){
         flag = true;
       }
     });

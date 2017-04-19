@@ -1,9 +1,9 @@
 import nltk
 # import pdb
 
-nltk.data.path.append("E:/nltk_data")
+nltk.data.path.append("/Users/jianqiaoliu/Downloads/nltk_data")
 
-sample = 'I study computer science at Purdue University. The president is Mitch Daniels.'
+sample = 'I study computer science at Purdue University. The president is Mitch Daniels. Indiana State is the Hoosier State.'
 
 sentences = nltk.sent_tokenize(sample)
 tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]

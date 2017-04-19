@@ -7,6 +7,7 @@ ETY
 	user    	text      not null,
 	tweet_time 	text      not null,
 	context    	text      not null,
+	convers_id 	text      not null,
 	isAuto    	text      not null
 );
 
@@ -27,5 +28,5 @@ TWEETS
 	user    	text      not null,
 	tweet_time 	text      not null,
 	content    	text      not null,
-	entities 	text      not null
+	convers_id 	text      not null
 );
