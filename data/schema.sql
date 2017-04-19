@@ -8,7 +8,8 @@ ETY
 	tweet_time 	text      not null,
 	context    	text      not null,
 	convers_id 	text      not null,
-	isAuto    	text      not null
+	isAuto    	text      not null,
+	comment    	text      
 );
 
 create table
