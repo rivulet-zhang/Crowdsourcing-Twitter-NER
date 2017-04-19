@@ -15,9 +15,9 @@ app.config.from_object(config)                         # Currently has no real e
 def reset_NPO_DB():
 		# GOOD:
 		db.query("DELETE FROM NPO where id > 0");
-		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Donald Trump", "Person", "https://en.wikipedia.org/wiki/Donald_Trump", "None"));
-		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "Place", "https://en.wikipedia.org/wiki/Purdue_University", "None"));
-		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Mitch Daniels", "Person", "https://en.wikipedia.org/wiki/Mitch_Daniels", "None"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Donald Trump", "PERSON", "https://en.wikipedia.org/wiki/Donald_Trump", "None"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "ORGANIZATION", "https://en.wikipedia.org/wiki/Purdue_University", "None"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Mitch Daniels", "PERSON", "https://en.wikipedia.org/wiki/Mitch_Daniels", "None"));
 		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Star Craft", "Object", "https://en.wikipedia.org/wiki/StarCraft", "None"));
 
 def reset_ETY_DB():

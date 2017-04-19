@@ -29,6 +29,7 @@ def extract_entity_names(t):
     entity_names = []
 
     if hasattr(t, 'label') and t.label:
+#    	print "%s  --> %s"%(t, t.label())
         if t.label() == 'PERSON' or t.label() == 'ORGANIZATION' or t.label() == 'LOCATION':
             # pdb.set_trace()
             entity_names.append([' '.join([child[0] for child in t]), t.label()])
@@ -80,7 +81,7 @@ def get_conversation():
 	else:
 		return tweets[0]
 
-def get_conversion_from_DB():
+def get_conversation_from_DB():
 	global _g_conversation_counter
 	_g_conversation_counter = _g_conversation_counter + 1
 	sql = "SELECT * from TWEETS WHERE convers_id=%d" % _g_conversation_counter
@@ -104,17 +105,33 @@ def get_conversion_from_DB():
 		    entity_names.extend(extract_entity_names(tree))
 
 		t['entity'] = entity_names
+		print entity_names
 		tweets.append(t)
 	return tweets
 
 def get_link(tweets):
+	print tweets
+	print type(tweets)
 	return [{'term1':'Purdue University','term2':'BoilerUp','comment':''}]
+
+def get_link_from_DB(tweets):
+	links = []
+	for tweet in tweets:
+		if len(tweet['entity']) != 0:
+			for entity in tweet['entity']:
+				print entity[0]
+				row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity[0])
+				if len(row) != 0:
+					links.append(row)
+	print links
+	return links
 
 # default page for client html
 @app.route('/')
 def client():
 
-	tweets = get_conversion_from_DB();
+	tweets = get_conversation();
+#	tweets = get_conversion_from_DB();
 	links = get_link(tweets)
 	return flask.render_template("client.html", tweets=tweets, links=links)
 
@@ -139,5 +156,6 @@ if __name__=="__main__":
 		test_add_tweet()
 		prepare.test_DB()
 #		get_conversation()
-		get_conversion_from_DB()
+		tweets = get_conversation_from_DB()
+		get_link_from_DB(tweets)
 		app.run(host="127.0.0.1", port=8080, debug=False, use_debugger=False, use_evalex=False)
