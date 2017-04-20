@@ -85,8 +85,8 @@ def get_conversation():
 
 def get_conversation_from_DB():
 	global _g_conversation_counter
-	_g_conversation_counter = _g_conversation_counter + 1
-	sql = "SELECT * from TWEETS WHERE convers_id=%d" % _g_conversation_counter
+	_g_conversation_counter = (_g_conversation_counter + 1)%2
+	sql = "SELECT * from TWEETS WHERE convers_id=%d" % (_g_conversation_counter+1)
 	parameters=()
 	conn = db.get_connection()
 	execute = conn.execute(sql, parameters)
@@ -109,12 +109,14 @@ def get_conversation_from_DB():
 		t['entity'] = entity_names
 		# print(entity_names)
 		tweets.append(t)
+
+	print(tweets)
 	return tweets
 
 def get_link(tweets):
 	# print(tweets)
 	# print(type(tweets))
-	return [{'term1':'Purdue University','term2':'BoilerUp','comment':''}]
+	return [{'npo':'Purdue University','ety':'BoilerUp','comment':''}]
 
 def get_link_from_DB(tweets):
 	links = []
@@ -133,7 +135,9 @@ def get_link_from_DB(tweets):
 							comment = json.dumps(comment)
 							links.append({'npo':entity['term'],'ety':dest,'comment':comment})
 
+	print('*****links begin*****')
 	print(links)
+	print('*****links end*****')
 	return links
 
 # default page for client html
@@ -142,7 +146,7 @@ def client():
 
 	# tweets = get_conversation();
 	tweets = get_conversation_from_DB();
-	print(tweets)
+	# print(tweets)
 	# links = get_link(tweets)
 	links = get_link_from_DB(tweets)
 	return flask.render_template("client.html", tweets=tweets, links=links)
@@ -168,6 +172,6 @@ if __name__=="__main__":
 		# test_add_tweet()
 		prepare.test_DB()
 #		get_conversation()
-		tweets = get_conversation_from_DB()
-		get_link_from_DB(tweets)
+		# tweets = get_conversation_from_DB()
+		# get_link_from_DB(tweets)
 		app.run(host="127.0.0.1", port=8080, debug=False, use_debugger=False, use_evalex=False)
