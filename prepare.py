@@ -16,7 +16,8 @@ def reset_NPO_DB():
 		# GOOD:
 		db.query("DELETE FROM NPO where id > 0");
 		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Donald Trump", "PERSON", "https://en.wikipedia.org/wiki/Donald_Trump", "trump,DT"));
-		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "ORGANIZATION", "https://en.wikipedia.org/wiki/Purdue_University", "Boiler Maker"));
+		# db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "ORGANIZATION", "https://en.wikipedia.org/wiki/Purdue_University", "BoilerUp"));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "ORGANIZATION", "https://en.wikipedia.org/wiki/Purdue_University", ""));
 		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Mitch Daniels", "PERSON", "https://en.wikipedia.org/wiki/Mitch_Daniels", ""));
 		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Star Craft", "Object", "https://en.wikipedia.org/wiki/StarCraft", ""));
 
@@ -26,13 +27,13 @@ def reset_ETY_DB():
 		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("45", "Donald Trump", "alex", "201704010100", "is 45 a good man?", 0, "False", ""));
 		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("DT", "Donald Trump", "alex", "201704010101", "is DT a good man?", 0, "False", ""));
 		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("Orange Julius", "Donald Trump", "alex", "201704010102", "is Orange Julius a good man?", 0, "False", ""));
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("Boiler Maker", "Purdue University", "alex", "201704010103", 
+		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("BoilerUp", "Purdue University", "alex", "201704010103", 
 			"We come from Purdue University! We are Boiler Makers!", 0, "False", ""));
 
 def reset_TWEETS_DB():
 		# GOOD:
 		db.query("DELETE FROM TWEETS where id > 0");
-#Conversation 1
+		#Conversation 1
 		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)",
 			                         ("jiawei", 
 			                         	datetime.datetime.now(), 
@@ -50,7 +51,7 @@ def reset_TWEETS_DB():
 			                         	1));
 		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
 			                         ("jianqiao", 
-			                         	datetime.datetime.now(), 
+			                         	datetime.datetime.now(),
 			                         	"Have you ever seen the RV-1 of your president?",  
 			                         	1));
 		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
