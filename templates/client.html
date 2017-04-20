@@ -64,9 +64,10 @@
       var html = "<ul>";
 
       tweets.forEach(function(tweet){
-        var entities = get_tweet_entity(tweet);
+        var entities = tweet['entity'];
         entities.forEach(function(entity){
-          html += "<li>" + entity.term + " -> " + "<font color='" + get_entity_color(entity.type) + "'>" + entity.type + "</font></li>";
+          if(entity.hasOwnProperty('term'))
+            html += "<li>" + entity.term + " -> " + "<font color='" + get_entity_color(entity.type) + "'>" + entity.type + "</font></li>";
         });
       });
 
@@ -76,9 +77,19 @@
       //populate links
       var html = "<ul>";
 
+      //existing links provided by the back-end
       links.forEach(function(link){
-        html += "<li>" + link.term1 + " <-> " + link.term2 + "</li>";
+        html += "<li>" + link.npo + " <-> " + link.ety + "</li>";
       });
+
+      tweets.forEach(function(tweet){
+        var entities = tweet['entity'];
+        entities.forEach(function(entity){
+          if(entity.hasOwnProperty('npo'))
+              html += "<li>" + entity.npo + " <-> " + entity.ety + "</li>";
+        });
+      });
+
 
       html += "</ul>";
       $("#linkRes").html(html);
@@ -88,48 +99,49 @@
 
     function addNewEntity(){
 
-      var term = $("input[name=newEntity]").val();
-      var type = $('#selectType').find(":selected").val();
-      var comment = $('textarea#recComment').val();
+      var npo = $.trim($("input[name=Entity1]").val());
+      var ety = $.trim($("input[name=Entity2]").val());
+      var type = $.trim($('#selectType').find(":selected").val());
+      var comment = $.trim($('textarea#recComment').val());
 
-      if(!term || type == 'Choose type'){
+      if(!npo || !ety || type == 'Choose type'){
         alert("format invalid!");
         return;
       }
 
-      if(!check_term_exist_in_tweets(tweets, term)){
+      if(!check_term_exist_in_tweets(tweets, npo) || !check_term_exist_in_tweets(tweets, ety) ){
         alert("entity not exist!");
         return;
       }
 
-      add_entity_in_tweets(tweets, term, type, comment);
+      add_entity_in_tweets(tweets, npo, ety, type, comment);
       updateVis();
 
     }
 
-    function addNewLink(){
+    // function addNewLink(){
 
-      var term1 = $("input[name=entity1]").val();
-      var term2 = $("input[name=entity2]").val();
-      var comment = $('textarea#linkComment').val();
+    //   var npo = $("input[name=entity1]").val();
+    //   var ety = $("input[name=entity2]").val();
+    //   var comment = $('textarea#linkComment').val();
 
-      if(!term1 || !term2){
-        alert("format invalid!");
-        return;
-      }
+    //   if(!npo || !ety){
+    //     alert("format invalid!");
+    //     return;
+    //   }
 
-      if( !check_term_exist_in_tweets(tweets, term1) || !check_term_exist_in_tweets(tweets, term2)){
-        alert("entity not exist!");
-        return;
-      }
+    //   if( !check_term_exist_in_tweets(tweets, npo) || !check_term_exist_in_tweets(tweets, ety)){
+    //     alert("entity not exist!");
+    //     return;
+    //   }
 
-      links.push({'term1':term1,'term2':term2,'comment':comment});
-      updateVis();
-    }
+    //   links.push({'npo':npo,'ety':ety,'comment':comment});
+    //   updateVis();
+    // }
 
     function populateRst(){
       $("#tweetsResult").val(JSON.stringify({tweets}));
-      $("#linksResult").val(JSON.stringify({links}));
+      // $("#linksResult").val(JSON.stringify({links}));
     }
 
   </script>
@@ -148,23 +160,19 @@
   <div id="content" class="tweet_content"></div>
 
   <!-- mode display-->
-  <div>
+  <!-- <div>
     <input type="radio" name="mode" value="recognize" checked>Recognize entities
     <input type="radio" name="mode" value="link">Link entities
-  </div>
+  </div> -->
 
   <!-- operation panel display-->
   <div id="recView" class="op_panel" style="display: block;">
 
-    <div style="float: left;">
-      <p><b>Current entities:</b></p>
-      <div id="recRes" class="result"></div>
-    </div>
-
     <div style="float: left; margin-left: 10px;">
-      <p><b>Add new entity:</b></p>
+      <p><b>Add new entity and linkage:</b></p>
       <div class="addNew">
-        <p>Entity: <input type="text" name="newEntity"><br><br></p>
+        <p>Entity 1: <input type="text" name="Entity1"><br><br></p>
+        <p>Entity 2: <input type="text" name="Entity2"><br><br></p>
         <p>Type: <select id="selectType">
                   <option selected="true" disabled="disabled">Choose type</option>
                   <option value="org"><b>Organization</b></option>
@@ -173,18 +181,13 @@
                 </select>
         </p>
         <p>Comments: <br><textarea id="recComment" rows="5" cols="25"></textarea></p>
-        <br><p><button type="button" onclick="addNewEntity()">Add</button></p>
+        <br><p><button type="button" onclick="alert('asdf');addNewEntity()">Add</button></p>
       </div>
     </div>
 
   </div>
 
-  <div id="linkView" class="op_panel" style="display: none;">
-
-    <div style="float: left;">
-      <p><b>Current linkage:</b></p>
-      <div id="linkRes" class="result"></div>
-    </div>
+  <!-- <div id="linkView" class="op_panel" style="display: none;">
 
     <div style="float: left; margin-left: 10px;">
       <p><b>Add new linkage:</b></p>
@@ -196,13 +199,13 @@
       </div>
     </div>
 
-  </div>
+  </div> -->
 
   <!-- submit -->
   <div class="submit">
     <form autocomplete="off" method="POST" action="{{ url_for('submit') }}">
       <input type="hidden" id="tweetsResult" name="tweetsResult" value="">
-      <input type="hidden" id="linksResult" name="linksResult" value="">
+      <!-- <input type="hidden" id="linksResult" name="linksResult" value=""> -->
       <input type="submit" value="Submit" id="submit" onclick="populateRst()">
     </form>
   </div>
@@ -211,6 +214,16 @@
 
 <div class="entity_view">
 	<h3>Entity View</h3>
+      <div style="float: left;">
+          <p><b>Current entities:</b></p>
+          <div id="recRes" class="result"></div>
+      </div>
+
+      <div style="float: left;">
+          <p><b>Current linkage:</b></p>
+          <div id="linkRes" class="result"></div>
+      </div>
+
 </div>
 
 </body>

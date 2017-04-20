@@ -7,6 +7,10 @@ function styling_tweet_entity(tweet){
 	var text_html = tweet['content'];
 
 	tweet['entity'].forEach(function(entity){
+
+    if(!entity.hasOwnProperty('term'))
+      return;
+
 		var s = text_html.toLowerCase().search(entity.term.toLowerCase());
 		if(s < 0 || s >= text_html.length)
 			console.error("error parsing entity");
@@ -20,19 +24,19 @@ function styling_tweet_entity(tweet){
 	return tweet;
 }
 
-function get_tweet_entity(tweet){
+// function get_tweet_entity(tweet){
 
-  return tweet['entity'].map(function(entity){
-                              return {term:entity.term, 'type':entity.type};
-                            });
-}
+//   return tweet['entity'].map(function(entity){
+//                               return {term:entity.term, 'type':entity.type};
+//                             });
+// }
 
-function add_entity_in_tweets(tweets, term, type, comment){
+function add_entity_in_tweets(tweets, npo, ety, type, comment){
 
   tweets.forEach(function(tweet){
 
-    if(tweet['content'].toLowerCase().indexOf(term.toLowerCase()) !== -1){
-      tweet.entity.push({'type':type, 'term':term, 'isAuto':false, 'comment':comment});
+    if(tweet['content'].toLowerCase().indexOf(npo.toLowerCase()) !== -1){
+      tweet.entity.push({'type':type, 'npo':npo, 'ety':ety, 'isAuto':false, 'comment':comment});
     }
 
   });

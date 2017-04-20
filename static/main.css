@@ -57,8 +57,8 @@ h1, h2, h3, h4, p {
 
 .result {
     border:1px solid black;
-    width: 220px;
-    height: 300px;
+    width: 350px;
+    height: 230px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 10px;   
@@ -67,10 +67,10 @@ h1, h2, h3, h4, p {
 .addNew {
     border:1px solid black;
     width: 220px;
-    height: 300px;
+    height: 350px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
-    margin-left: 10px;   
+    margin-left: 10px;
 }
 
 .entity_view {
