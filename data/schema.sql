@@ -4,6 +4,7 @@ ETY
 	id 			integer primary key,
 	name    	text      not null,
 	source    	text      not null,
+	class    	text      not null,
 	user    	text      not null,
 	tweet_time 	text      not null,
 	context    	text      not null,

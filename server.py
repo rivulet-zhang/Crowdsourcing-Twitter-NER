@@ -106,11 +106,21 @@ def get_conversation_from_DB():
 		for tree in chunked_sentences:
 		    entity_names.extend(extract_entity_names(tree))
 
+		# We search our own database to find more entities
+		existed_entities = db.query("select * from ETY")
+		for entity_row in existed_entities:
+			# we direct access the name of entity by the index, 0 means the id, 1 means the name, 2 means the source, 3 for type, 9 for comment
+			entity = entity_row[1]
+			if t['content'].find(entity) != -1:
+				entity_record = []
+				entity_record.append({'term':entity_row[1], 'type':entity_row[3], 'isAuto':True, 'comment':entity_row[9]})
+				entity_names.extend(entity_record)
+
 		t['entity'] = entity_names
 		# print(entity_names)
 		tweets.append(t)
 
-	print(tweets)
+#	print(tweets)
 	return tweets
 
 def get_link(tweets):
@@ -164,20 +174,20 @@ def submit():
 			for entity in tweet['entity']:
 				if 'npo' in entity:
 					# code here
-					print("\nentity information")
-					print(entity['npo'])
-					print(entity['ety'])
-					print(entity['type'])
-					print(entity['comment'])
-					print(tweet['content'])
+#					print("\nentity information")
+#					print(entity['npo'])
+#					print(entity['ety'])
+#					print(entity['type'])
+#					print(entity['comment'])
+#					print(tweet['content'])
 					npo_row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity['npo'])
 					if len(npo_row) == 0:
 						db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", 
 							(entity['npo'], entity['type'], "https://en.wikipedia.org/wiki/" + entity['npo'], entity['ety']));
 					ety_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % entity['ety'])
 					if len(ety_row) == 0:
-						db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) " +
-						 " values (?, ?, ?, ?, ?, ?, ?, ?)", (entity['ety'], entity['npo'], tweet['user'], "", tweet['content'], 0, "False", entity['comment']));
+						db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) " +
+						 " values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (entity['ety'], entity['npo'], entity['type'], tweet['user'], "", tweet['content'], 0, "False", entity['comment']));
 
 	rows = db.query("select * from NPO")
 	print rows

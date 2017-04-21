@@ -24,10 +24,10 @@ def reset_NPO_DB():
 def reset_ETY_DB():
 		# GOOD:
 		db.query("DELETE FROM ETY where id > 0");
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("45", "Donald Trump", "alex", "201704010100", "is 45 a good man?", 0, "False", ""));
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("DT", "Donald Trump", "alex", "201704010101", "is DT a good man?", 0, "False", ""));
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("Orange Julius", "Donald Trump", "alex", "201704010102", "is Orange Julius a good man?", 0, "False", ""));
-		db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?)", ("BoilerUp", "Purdue University", "alex", "201704010103", 
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("45", "Donald Trump", "PERSON", "alex", "201704010100", "is 45 a good man?", 0, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("DT", "Donald Trump", "PERSON", "alex", "201704010101", "is DT a good man?", 0, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("Orange Julius", "Donald Trump", "PERSON", "alex", "201704010102", "is Orange Julius a good man?", 0, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("BoilerUp", "Purdue University", "ORGANIZATION", "alex", "201704010103", 
 			"We come from Purdue University! We are Boiler Makers!", 0, "False", ""));
 
 def reset_TWEETS_DB():
