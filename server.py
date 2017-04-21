@@ -85,7 +85,8 @@ def get_conversation():
 
 def get_conversation_from_DB():
 	global _g_conversation_counter
-	_g_conversation_counter = (_g_conversation_counter + 1)%2
+#	_g_conversation_counter = _g_conversation_counter + 1
+	_g_conversation_counter = 1
 	sql = "SELECT * from TWEETS WHERE convers_id=%d" % (_g_conversation_counter+1)
 	parameters=()
 	conn = db.get_connection()
@@ -133,17 +134,11 @@ def get_link_from_DB(tweets):
 	for tweet in tweets:
 		if len(tweet['entity']) != 0:
 			for entity in tweet['entity']:
-				# print(entity[0])
-				row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity['term'])
-				if len(row) != 0 and len(row[0]['dest']) > 0:
-					# dest "word1,word2,word3"
-					dests = [x.strip() for x in row[0]['dest'].split(',')]
-					for dest in dests:
-						_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % dest)
-						if len(_row) != 0:
-							comment = {'user':_row[0]['user'], 'context':_row[0]['context'], 'comment':_row[0]['comment']}
-							comment = json.dumps(comment)
-							links.append({'npo':entity['term'],'ety':dest,'comment':comment})
+				_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % entity['term'])
+				if len(_row) != 0:
+					comment = {'user':_row[0][4], 'context':_row[0][6], 'comment':_row[0][9]}
+					comment = json.dumps(comment)
+					links.append({'npo':_row[0][2],'ety':entity['term'],'comment':comment})
 
 	print('*****links begin*****')
 	print(links)
@@ -184,6 +179,7 @@ def submit():
 					if len(npo_row) == 0:
 						db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", 
 							(entity['npo'], entity['type'], "https://en.wikipedia.org/wiki/" + entity['npo'], entity['ety']));
+					# ELSE, UPDATE NPO RECORD
 					ety_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % entity['ety'])
 					if len(ety_row) == 0:
 						db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) " +
