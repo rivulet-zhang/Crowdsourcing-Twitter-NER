@@ -43,3 +43,11 @@ sample format:
 
 tweets = 
  [{'user': 'U1', 'time': 'Mon, 17 Apr 2017 00:37:57 GMT', 'text': 'Hey there! I study at Purdue University.', 'id': 100, 'entity': [{'npo': 'Purdue University', 'ety':'boilerup', 'comment': '', 'isAuto': True, 'type': 'ORGANIZATION'}]}, {'user': 'U2', 'time': 'Mon, 17 Apr 2017 00:37:57 GMT', 'text': 'BoilerUp!', 'id': 101, 'entity': []}]
+
+
+Create a fresh database.
+$ cd ./data/
+$ rm -rf db.sqlite
+$ sqlite3 db.sqlite < schema.sql
+$ cd ..
+

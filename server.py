@@ -160,7 +160,6 @@ def submit():
 	# links = json.loads(rst['linksResult'])['links']
 
 	for tweet in tweets:
-		# list
 		if len(tweet['entity']) != 0:
 			for entity in tweet['entity']:
 				if 'npo' in entity:
@@ -171,7 +170,19 @@ def submit():
 					print(entity['type'])
 					print(entity['comment'])
 					print(tweet['content'])
+					npo_row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity['npo'])
+					if len(npo_row) == 0:
+						db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", 
+							(entity['npo'], entity['type'], "https://en.wikipedia.org/wiki/" + entity['npo'], entity['ety']));
+					ety_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % entity['ety'])
+					if len(ety_row) == 0:
+						db.query("INSERT INTO ETY (name, source, user, tweet_time, context, convers_id, isAuto, comment) " +
+						 " values (?, ?, ?, ?, ?, ?, ?, ?)", (entity['ety'], entity['npo'], tweet['user'], "", tweet['content'], 0, "False", entity['comment']));
 
+	rows = db.query("select * from NPO")
+	print rows
+	rows = db.query("select * from ETY")
+	print rows
 	return "Answer received"
 
 
