@@ -15,27 +15,10 @@
   	var tweets = {{ tweets | tojson }};
     var links = {{ links | tojson }};
 
-    // userMode: 0 -> entity recognition; 1 -> entity linking
-    var userMode = 0;
-
     //DOM initialization
   	$(document).ready(function(){
 
-      //initialize event handler
-      $('input:radio[name="mode"]').change(function(){
-        if ($(this).val() == 'recognize') {
-          userMode = 0;
-          $('#recView').css('display','block');
-          $('#linkView').css('display','none');
-        }
-        else{
-          userMode = 1;
-          $('#recView').css('display','none');
-          $('#linkView').css('display','block');
-        }
-      });
-
-      //styling dropdown list;
+      //styling dropdown list -- coloring different types;
       (function(){
         var select = document.getElementById('selectType');
         for(var i = 0; i < select.options.length; i++) {
@@ -44,13 +27,14 @@
         }
       })();
 
+      //render the current list of entities/links;
       updateVis();
 
   	});
 
     function updateVis(){
 
-      //polulate tweets
+      //polulate tweets with color on entities
       var tweets_tagged = tweets.map(function(tweet){
         return styling_tweet_entity(tweet);
       });
@@ -60,33 +44,43 @@
         $("#content").append("<p>"+tweet['user']+": "+tweet['text_tagged']+"</p>");
       });
 
-      //populate entities
+      //populate entities in the right-top view;
       var html = "<ul>";
 
       tweets.forEach(function(tweet){
         var entities = tweet['entity'];
         entities.forEach(function(entity){
           if(entity.hasOwnProperty('term'))
-            html += "<li>" + entity.term + " -> " + "<font color='" + get_entity_color(entity.type) + "'>" + entity.type + "</font></li>";
+            html += "<li>" + entity.term + " -> " + "<font color='" + get_entity_color(entity.type) + "'>" + entity.type + "</font>";
+            // if(entity.hasOwnProperty('comment') && entity.comment.length > 0 )
+            //   html += "<br><font color='#888'>Comment: " + entity.comment + "</font>"  
+            html += "</li>";
+
         });
       });
 
       html += "</ul>";
       $("#recRes").html(html);
 
-      //populate links
+      //populate links in the right-botton view;
       var html = "<ul>";
 
       //existing links provided by the back-end
       links.forEach(function(link){
-        html += "<li>" + link.npo + " <-> " + link.ety + "</li>";
+        html += "<li>" + link.npo + " <-> " + link.ety;
+        if(link.hasOwnProperty('comment') && link.comment.length > 0)
+          html += "<br><font color='#888'>Comment: " + link.comment + "</font>"  
+        html += "</li>";
       });
 
       tweets.forEach(function(tweet){
         var entities = tweet['entity'];
         entities.forEach(function(entity){
           if(entity.hasOwnProperty('npo'))
-              html += "<li>" + entity.npo + " <-> " + entity.ety + "</li>";
+              html += "<li>" + entity.npo + " <-> " + entity.ety;
+              if(entity.hasOwnProperty('comment') && entity.comment.length > 0)
+                html += "<br><font color='#888'>Comment: " + entity.comment + "</font>"  
+              html += "</li>";
         });
       });
 
@@ -96,7 +90,7 @@
 
     }
 
-
+    //add new entities based on user input
     function addNewEntity(){
 
       var npo = $.trim($("input[name=Entity1]").val());
@@ -104,44 +98,26 @@
       var type = $.trim($('#selectType').find(":selected").val());
       var comment = $.trim($('textarea#recComment').val());
 
+      //format check
       if(!npo || !ety || type == 'Choose type'){
         alert("format invalid!");
         return;
       }
 
+      //keyword existence check
       if(!check_term_exist_in_tweets(tweets, npo) || !check_term_exist_in_tweets(tweets, ety) ){
         alert("entity not exist!");
         return;
       }
 
+      //add the entity in the tweets;
       add_entity_in_tweets(tweets, npo, ety, type, comment);
       updateVis();
-
     }
 
-    // function addNewLink(){
-
-    //   var npo = $("input[name=entity1]").val();
-    //   var ety = $("input[name=entity2]").val();
-    //   var comment = $('textarea#linkComment').val();
-
-    //   if(!npo || !ety){
-    //     alert("format invalid!");
-    //     return;
-    //   }
-
-    //   if( !check_term_exist_in_tweets(tweets, npo) || !check_term_exist_in_tweets(tweets, ety)){
-    //     alert("entity not exist!");
-    //     return;
-    //   }
-
-    //   links.push({'npo':npo,'ety':ety,'comment':comment});
-    //   updateVis();
-    // }
-
+    //write content in the hidden container for back-front data transfer
     function populateRst(){
       $("#tweetsResult").val(JSON.stringify({tweets}));
-      // $("#linksResult").val(JSON.stringify({links}));
     }
 
   </script>
@@ -159,12 +135,6 @@
   <!-- tweet display-->
   <div id="content" class="tweet_content"></div>
 
-  <!-- mode display-->
-  <!-- <div>
-    <input type="radio" name="mode" value="recognize" checked>Recognize entities
-    <input type="radio" name="mode" value="link">Link entities
-  </div> -->
-
   <!-- operation panel display-->
   <div id="recView" class="op_panel" style="display: block;">
 
@@ -180,26 +150,12 @@
                   <option value="psn"><b>Person</b></option>
                 </select>
         </p>
-        <p>Comments: <br><textarea id="recComment" rows="5" cols="25"></textarea></p>
-        <br><p><button type="button" onclick="alert('asdf');addNewEntity()">Add</button></p>
+        <p>Comments: <br><textarea id="recComment" rows="5" cols="30"></textarea></p>
+        <br><p><button type="button" onclick="addNewEntity()">Add</button></p>
       </div>
     </div>
 
   </div>
-
-  <!-- <div id="linkView" class="op_panel" style="display: none;">
-
-    <div style="float: left; margin-left: 10px;">
-      <p><b>Add new linkage:</b></p>
-      <div class="addNew">
-        <p>Entity 1: <input type="text" name="entity1"></p>
-        <p>Entity 2: <input type="text" name="entity2"></p>
-        <p>Comments: <br><textarea id="linkComment" rows="5" cols="25"></textarea></p>
-        <br><p><button type="button" onclick="addNewLink()">Add</button></p>
-      </div>
-    </div>
-
-  </div> -->
 
   <!-- submit -->
   <div class="submit">
