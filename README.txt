@@ -1,19 +1,37 @@
-A course project for Crowd-Powered Systems (in progress)
+A Context-Dependent Crowdsourcing Approach for Entity Recognition and Linking on Tweets
+
+This is a course project at Purdue University taught by Prof.Alex Quinn.
 
 Team member:
-Jiawei Zhang and Jianqiao Liu
+Jiawei Zhang (zhan1486@purdue.edu) and Jianqiao Liu (liu1274@purdue.edu)
 
 External libraries required:
 Tweepy
+Flask
+NLTK
+pysqlite
 
-Instruction:
-python server.py
+Instructions:
+1. In server.py, change the following line to direct to the location for NLTK data resources.
+2. python server.py
+
+Instructions on formatting the database:
+1. cd ./data/
+2. rm -rf db.sqlite
+3. sqlite3 db.sqlite < schema.sql
+4. cd ..
 
 Code structure:
-twitterapi.py -- a wrapper that captures the real-time Twitter stream within a geographic bounding box.
-server.py -- a flask server that provides web services and stores twitter and entities. A twitter api instance is created in the server class.
-templates/client.html -- a front end interface for workers to tag entities in Twitter messages.
+./data -- database file for tweets and entities
+./static -- JS and css files for front-end interface
+./templates -- html page for front-end interface
 
+twitterapi.py -- a wrapper that captures the real-time Twitter stream within a geographic bounding box
+server.py -- a flask server that provides web services and stores twitter and entities. A twitter api instance is created in the server class
+
+db.py and prepare.py -- database operations in the back-end
+
+More details on the implementation and code structure:
 
 We store our test tweets into a TWEETS data table.
 
@@ -43,11 +61,4 @@ sample format:
 
 tweets = 
  [{'user': 'U1', 'time': 'Mon, 17 Apr 2017 00:37:57 GMT', 'text': 'Hey there! I study at Purdue University.', 'id': 100, 'entity': [{'npo': 'Purdue University', 'ety':'boilerup', 'comment': '', 'isAuto': True, 'type': 'ORGANIZATION'}]}, {'user': 'U2', 'time': 'Mon, 17 Apr 2017 00:37:57 GMT', 'text': 'BoilerUp!', 'id': 101, 'entity': []}]
-
-
-Create a fresh database.
-$ cd ./data/
-$ rm -rf db.sqlite
-$ sqlite3 db.sqlite < schema.sql
-$ cd ..
 
