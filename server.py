@@ -26,6 +26,7 @@ _g_conversation_counter = 0
 # 	api.stream(tweetDB)
 
 entity_abbr = {'PERSON':'psn', 'ORGANIZATION':'org', 'LOCATION':'loc'}
+entity_reverse = {'psn':'PERSON', 'org':'ORGANIZATION', 'loc':'LOCATION'}
 
 def extract_entity_names(t):
     entity_names = []
@@ -175,6 +176,8 @@ def submit():
 #					print(entity['type'])
 #					print(entity['comment'])
 #					print(tweet['content'])
+					entity['type'] = entity_reverse[entity['type']]
+
 					npo_row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity['npo'])
 					if len(npo_row) == 0:
 						db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", 
