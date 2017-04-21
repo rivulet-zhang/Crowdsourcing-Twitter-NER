@@ -141,16 +141,14 @@
     <div style="float: left; margin-left: 10px;">
       <p><b>Add new entity and linkage:</b></p>
       <div class="addNew">
-        <p>Entity 1: <input type="text" name="Entity1"><br><br></p>
-        <p>Entity 2: <input type="text" name="Entity2"><br><br></p>
+        <p>NPO: <input type="text" name="Entity1"> &nbsp;&nbsp; Entity: <input type="text" name="Entity2"><br><br></p>
         <p>Type: <select id="selectType">
                   <option selected="true" disabled="disabled">Choose type</option>
                   <option value="org"><b>Organization</b></option>
                   <option value="loc"><b>Location</b></option>
                   <option value="psn"><b>Person</b></option>
                 </select>
-        </p>
-        <p>Comments: <br><textarea id="recComment" rows="5" cols="30"></textarea></p>
+        &nbsp; Comments: <textarea id="recComment" rows="5" cols="15" style="vertical-align:top;"></textarea></p>
         <br><p><button type="button" onclick="addNewEntity()">Add</button></p>
       </div>
     </div>
@@ -168,6 +166,7 @@
 
 </div>
 
+<!-- view in the right handside to show curent results -->
 <div class="entity_view">
 	<h3>Entity View</h3>
       <div style="float: left;">

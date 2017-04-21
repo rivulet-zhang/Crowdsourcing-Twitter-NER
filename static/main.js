@@ -1,7 +1,6 @@
 'use strict';
 
-// tweet['entity'] = []
-// tweet['entity'].append({'type':'org', 'term':'Purdue Univeristy', 'isAuto':True})
+//change color of text if it is a entity;
 function styling_tweet_entity(tweet){
 
 	var text_html = tweet['content'];
@@ -24,13 +23,7 @@ function styling_tweet_entity(tweet){
 	return tweet;
 }
 
-// function get_tweet_entity(tweet){
-
-//   return tweet['entity'].map(function(entity){
-//                               return {term:entity.term, 'type':entity.type};
-//                             });
-// }
-
+// add the entity from user input to the tweet list;
 function add_entity_in_tweets(tweets, npo, ety, type, comment){
 
   tweets.forEach(function(tweet){
@@ -45,6 +38,7 @@ function add_entity_in_tweets(tweets, npo, ety, type, comment){
 
 }
 
+// check if a term exists in the tweet;
 function check_term_exist_in_tweets(tweets, term){
 
     var flag = false;
