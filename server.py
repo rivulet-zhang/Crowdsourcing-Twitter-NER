@@ -159,8 +159,18 @@ def submit():
 	tweets = json.loads(rst['tweetsResult'])['tweets']
 	# links = json.loads(rst['linksResult'])['links']
 
-	print("tweets: ", tweets)
-	# print("links: ", links)
+	for tweet in tweets:
+		# list
+		if len(tweet['entity']) != 0:
+			for entity in tweet['entity']:
+				if 'npo' in entity:
+					# code here
+					print("\nentity information")
+					print(entity['npo'])
+					print(entity['ety'])
+					print(entity['type'])
+					print(entity['comment'])
+					print(tweet['content'])
 
 	return "Answer received"
 
