@@ -50,7 +50,7 @@
         var entities = tweet['entity'];
         entities.forEach(function(entity){
           if(entity.hasOwnProperty('term'))
-            html += "<li>" + entity.term + " -> " + "<font color='" + get_entity_color(entity.type) + "'>" + entity.type + "</font>";
+            html += "<li>" + entity.term + " -> " + "<font color='" + get_entity_color(entity.type) + "'><b>" + entity.type + "</b></font>";
             // if(entity.hasOwnProperty('comment') && entity.comment.length > 0 )
             //   html += "<br><font color='#888'>Comment: " + entity.comment + "</font>"  
             html += "</li>";
@@ -129,16 +129,17 @@
 </div>
 
 <div class="tweet_view">
-	<h3>Tweet View</h3>
 	
   <!-- tweet display-->
-  <div id="content" class="tweet_content"></div>
-
+  <div class="op_panel" style="display: block;">
+    <h3>Tweet View</h3>
+    <div id="content" class="tweet_content"></div>
+  </div>
   <!-- operation panel display-->
   <div id="recView" class="op_panel" style="display: block;">
 
     <div style="float: left; margin-left: 10px;">
-      <p><b>Add new entity and linkage:</b></p>
+      <br><h3>Add new entity and linkage</h3>
       <div class="addNew">
         <p>NPO: <input type="text" name="Entity1"> &nbsp;&nbsp; Entity: <input type="text" name="Entity2"><br><br></p>
         <p>Type: <select id="selectType">
@@ -148,7 +149,7 @@
                   <option value="PERSON"><b>PERSON</b></option>
                   <option value="OTHERS"><b>OTHERS</b></option>
                 </select>
-        &nbsp; Comments: <textarea id="recComment" rows="5" cols="15" style="vertical-align:top;"></textarea></p>
+        &nbsp; Comments: <textarea id="recComment" rows="5" cols="20" style="vertical-align:top;"></textarea></p>
         <br><p><button type="button" onclick="addNewEntity()">Add</button></p>
       </div>
     </div>
@@ -178,8 +179,15 @@
           <p><b>Current linkage:</b></p>
           <div id="linkRes" class="result"></div>
       </div>
-
 </div>
+
+<footer>
+<p>This project was posted by Jiawei and Jianqiao for a course project at Purdue University taught by Prof. Alex Quinn</p>
+
+<p>Team member:
+Jiawei Zhang (<a href="mailto:zhan1486@purdue.edu">zhan1486@purdue.edu</a>)<br>
+Jianqiao Liu (<a href="mailto:liu1274@purdue.edu">liu1274@purdue.edu</a>)</p>
+</footer>
 
 </body>
 </html>

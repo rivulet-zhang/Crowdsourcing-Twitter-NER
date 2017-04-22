@@ -29,7 +29,7 @@ h1, h2, h3, h4, p {
 
 .tweet_content {
     border:1px solid black;
-    width: 480px;
+    width: 470px;
     height: 250px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
@@ -48,11 +48,10 @@ h1, h2, h3, h4, p {
 
 .addNew {
     border:1px solid black;
-    width: 450px;
-    height: 240px;
+    width: 470px;
+    height: 230px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
-    margin-left: 10px;
 }
 
 .submit {
@@ -66,8 +65,8 @@ h1, h2, h3, h4, p {
 
 .result {
     border:1px solid black;
-    width: 350px;
-    height: 230px;
+    width: 430px;
+    height: 250px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
     margin-left: 10px;
@@ -90,13 +89,13 @@ input {
 }
 
 input[type="text"] {
-    width: 100px;
+    width: 140px;
     height: 10px;
 }
 
 select {
     margin-left: 15px;
-    width: 100px;
+    width: 140px;
 }
 
 button {
@@ -106,6 +105,7 @@ button {
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     font-size: 16px;
     margin-right: 10px;
+    margin-top: -15px;
     position: relative;
 }
 
@@ -115,7 +115,6 @@ input[type=submit] {
     float: right;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     font-size: 16px;
-    margin-top: 10px;
-    margin-right: 10px;
+    margin-top: 25px;
     text-align: center;
 }
