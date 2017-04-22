@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Project Milestone 3 Introduction [ece695cps]</title>
+
+<style>
+	body {
+	    position: relative;
+	    width: 1024px;
+	    height: 768px;
+	    height: 100%;
+	    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+	}
+
+	html {
+	    display: table;
+	    margin: auto;
+	}
+
+	body {
+	    display: table-cell;
+	    vertical-align: middle;
+	    text-align: justify;
+    	text-justify: inter-word;
+	}
+
+	h1 {
+		font-size: 28px;
+	}
+</style>
+
+</head>
+<body>
+
+<h1>A Crowdsourcing Approach to Interactive Named-Entity Recognition in Twitter</h1>
+
+<h2>Team Members</h2>
+Jiawei Zhang, Jianqiao Liu
+
+<h2>Introduction</h2>
+<p>Named-Entity Recognition has long been a key issue in text mining and natural language processing fields. While existing approaches are proved to be effective on standard text, their performance is severely degraded on social media text such as tweets. To this end, we introduce a crowdsourcing approach toward effective named-entity recognition on tweets. Our approach utilizes the automatic NLP methods to pre-process tweets and extract potential named-entities, and then asks the workers to verify and disambiguate the automatically-generated results through an intelligent visual interactive interface. The effectiveness of our approach is validated through a pilot user evaluation.
+
+<h2>Research Problem</h2>
+Recognize named-entity in Twitter messsage. In the project, we specifically focus on three types of named-entities: names of person, organization and location. We focus on three sub-tasks.
+<ul>
+<li>Identify the word or the phrase that is a named-entity and choose the type of the entity.</li>
+<li>Disambiguate an entity by expanding the entity or providing supporting information.</li>
+<li>Link entities that refer to the same object.</li>
+</ul>
+
+<h2>Approach and Validation</h2>
+
+<p style="text-align:center;"><img src="project.PNG" alt="interface" style="width:720px;"><br>Fig 1. The mock-up interface of the approach.</p>
+
+<b>How to organize data?</b>
+<br>
+Our system will be based on a client-server architecture. The server captures the real-time Twitter stream based on a user-defined geographical box and send them to the client in real-time. A Twitter message can contain timestamp, user id, user name, geolocation and message content. 
+<br>
+<br>
+
+<b>What does the UI look like?</b>
+<br>
+There will be a tabular view to interact with the participants (Fig 1). The content of the tabular view includes a textbox, a table, a “Next” button and an “Update” field:
+The textbox shows a tweet assigned to the participant. These entities that have already been recognized by our system will be highlighted.
+The table lists every entity recognized in the tweet and these other entities potentially related with it. These “potentially related entities” are extracted from our database.
+<br>
+<br>
+If the participant is satisfied with the automatically generated result, he/she should click the “Next” button and get a new tweet. The result of the old tweet will be confirmed (explained in the question below). 
+Otherwise, the participant is asked to filled in the separate “Update” field. The layout of the field is similar to this: Keyword: <i>45</i>; Entity: <i>Trump</i>; Comment: <i>...</i>;  “Update” button.
+<br>
+<br>
+
+<b>How does the user interact with the system?</b>
+<br>
+If the participant click the “Next” button, our system will submit the result to our background. All unmodified result will increase its “Strength” attribute by 1. 
+If the participant add some new entities and connections, our system will use the time of the tweet, all the entities in the tweet and the comment to create a new entity. The connects are initialized with “Strength = 1”.
+<br>
+<br>
+
+<b>How to update the data collected from participants?</b>
+<br>
+Each entity has connections with other entities. These connections are measured by their “Strength” attribute. When the participant agrees with an existing connection, its “Strength” value will be increased and vice versa. The connection will be deleted once its strength drops below some threshold.
+In the result page, these connection are shown in the order of their “Strength” value. 
+<br>
+<br>
+
+<b>How to review the workers' result?</b>
+<br>
+We provide two different views to show the result. In the tweet-centric view, we list all tweets that have been reviewed and tagged by the workers. For each tweet, we highlight the entities and their types that were edited by the workers. We also show additional entities that are related to the ones in the current tweet in another column.In the entity-centric view, we list all the entities that are recognized by the workers. For each entity, we visualize the different types and their percentage (confidence) using a pie chart. We also show entities relevant to the current one in another column. Finally, we provide user's comment/explanation in an extra column.
+<br>
+<br>
+
+<b>How to validate the approach?</b>
+<br>
+We will recruit 5-10 workers to recognize named-entities of real-time Twitter streams from a relative small region, so that the number of tweets won't be so many that would add cognitive overload to the users. The workers will be asked to work collaboratively. Each session will last for 20 minutes. The entities detected by the users will be compared with the automatic approaches.
+<br>
+<br>
+
+<h2>References</h2>
+<ul>
+  <li>Zhai, Haijun, et al. "Web 2.0-based crowdsourcing for high-quality gold standard development in clinical natural language processing." Journal of medical Internet research 15.4 (2013): e73.
+</li>
+  <li>Bontcheva, Kalina, Leon Derczynski, and Ian Roberts. "Crowdsourcing named entity recognition and entity linking corpora." The Handbook of Linguistic Annotation (2014).</li>
+  <li>Finin, Tim, et al. "Annotating named entities in Twitter data with crowdsourcing." Proceedings of the NAACL HLT 2010 Workshop on Creating Speech and Language Data with Amazon's Mechanical Turk. Association for Computational Linguistics, 2010.</li>
+</ul>
+
+</body>
+</html>
