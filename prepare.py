@@ -16,16 +16,44 @@ def reset_NPO_DB():
 		# GOOD:
 		db.query("DELETE FROM NPO where id > 0");
 		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Donald Trump", "PERSON", "https://en.wikipedia.org/wiki/Donald_Trump", "trump,DT"));
-		# db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "ORGANIZATION", "https://en.wikipedia.org/wiki/Purdue_University", "BoilerUp"));
-		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "ORGANIZATION", "https://en.wikipedia.org/wiki/Purdue_University", ""));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Purdue University", "ORGANIZATION", "https://en.wikipedia.org/wiki/Purdue_University", "BoilerUp"));
 		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Mitch Daniels", "PERSON", "https://en.wikipedia.org/wiki/Mitch_Daniels", ""));
-		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Star Craft", "Object", "https://en.wikipedia.org/wiki/StarCraft", ""));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Star Craft", "OTHERS", "https://en.wikipedia.org/wiki/StarCraft", ""));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("The King of the Seven Kingdoms", "PERSON", "https://en.wikipedia.org/wiki/Daenerys_Targaryen", 
+			"First of his name, King of the Andals and the First Men, Lord of the Seven Kingdoms, Protector of the Realm, "));
+		db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", ("Daenerys Targaryen", "PERSON", "https://en.wikipedia.org/wiki/Daenerys_Targaryen", 
+			"The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons, "));
 
 def reset_ETY_DB():
 		# GOOD:
 		db.query("DELETE FROM ETY where id > 0");
 		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("45", "Donald Trump", "PERSON", "alex", "201704010100", "is 45 a good man?", 0, "False", ""));
 		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("DT", "Donald Trump", "PERSON", "alex", "201704010101", "is DT a good man?", 0, "False", ""));
+
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("First of his name", "The King of the Seven Kingdoms", "PERSON", "Cain Snow", "2:48 PM - 22 Feb 2017", "First of his name. King of the Andals and the First Men, Lord of the Seven Kingdoms, and Protector of the Realm. Long may he reign.", 2, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("King of the Andals and the First Men", "The King of the Seven Kingdoms", "PERSON", "Cain Snow", "2:48 PM - 22 Feb 2017", "First of his name. King of the Andals and the First Men, Lord of the Seven Kingdoms, and Protector of the Realm. Long may he reign.", 2, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("Lord of the Seven Kingdoms", "The King of the Seven Kingdoms", "PERSON", "Cain Snow", "2:48 PM - 22 Feb 2017", "First of his name. King of the Andals and the First Men, Lord of the Seven Kingdoms, and Protector of the Realm. Long may he reign.", 2, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("Protector of the Realm", "The King of the Seven Kingdoms", "PERSON", "Cain Snow", "2:48 PM - 22 Feb 2017", "First of his name. King of the Andals and the First Men, Lord of the Seven Kingdoms, and Protector of the Realm. Long may he reign.", 2, "False", ""));
+
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("The Unburnt Queen of the Andals", "Daenerys Targaryen", "PERSON", "mat morgan", "4:51 PM - 22 Feb 2017", "The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.", 2, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("Queen of Meereen", "Daenerys Targaryen", "PERSON", "mat morgan", "4:51 PM - 22 Feb 2017", "The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.", 2, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("Khaleesi of the Great Grass Sea", "Daenerys Targaryen", "PERSON", "mat morgan", "4:51 PM - 22 Feb 2017", "The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.", 2, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("Breaker of Chains", "Daenerys Targaryen", "PERSON", "mat morgan", "4:51 PM - 22 Feb 2017", "The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.", 2, "False", ""));
+		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+			("Mother of Dragons", "Daenerys Targaryen", "PERSON", "mat morgan", "4:51 PM - 22 Feb 2017", "The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.", 2, "False", ""));
+
+
+
+
+
 		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("Orange Julius", "Donald Trump", "PERSON", "alex", "201704010102", "is Orange Julius a good man?", 0, "False", ""));
 		db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("BoilerUp", "Purdue University", "ORGANIZATION", "alex", "201704010103", 
 			"We come from Purdue University! We are Boiler Makers!", 0, "False", ""));

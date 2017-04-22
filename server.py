@@ -1,5 +1,6 @@
 # (c) Copyright 2016  Jiawei Zhang and Jianqiao Liu - MIT License
 from __future__ import division, unicode_literals 
+from sys import platform
 import flask
 import config, db, prepare
 #from twitterapi import TwitterAPI
@@ -14,29 +15,31 @@ import datetime
 
 app = flask.Flask(__name__, static_url_path='/static') # Create application
 app.config.from_object(config)                         # Currently has no real effect
-# nltk.data.path.append("/Users/jianqiaoliu/Downloads/nltk_data")
-nltk.data.path.append("E:/nltk_data")
+if platform == "darwin":
+	nltk.data.path.append("/Users/jianqiaoliu/Downloads/nltk_data")
+else:
+	nltk.data.path.append("E:/nltk_data")
 
 # global variable to store real-time tweets
 tweetDB = {}
 _g_conversation_counter = 0
 
-# start twitter api to collect realtime tweets
-# def start_twitter_api():
-# 	api = TwitterAPI()
-# 	api.stream(tweetDB)
-
-def extract_entity_names(t):
+def extract_entity_names(t, found_entities):
     entity_names = []
-
-    if hasattr(t, 'label') and t.label:
-#    	print "%s  --> %s"%(t, t.label())
+    if hasattr(t, 'label') and t.label :
         if t.label() == 'PERSON' or t.label() == 'ORGANIZATION' or t.label() == 'LOCATION':
             # pdb.set_trace()
-            entity_names.append({'term':' '.join([child[0] for child in t]), 'type':t.label(), 'isAuto':True, 'comment':''})
+    		name = ' '.join([child[0] for child in t])
+    		found = False;
+    		for entity in found_entities:
+    			if entity.find(name) != -1:
+    				found = True
+    				break;
+    		if found == False:
+    			entity_names.append({'term':' '.join([child[0] for child in t]), 'type':t.label(), 'isAuto':True, 'comment':''})
         else:
             for child in t:
-                entity_names.extend(extract_entity_names(child))
+                entity_names.extend(extract_entity_names(child, found_entities))
 
     return entity_names
 
@@ -95,19 +98,13 @@ def get_conversation_from_DB():
 	tweets = []
 	for row in rows:
 		t = {}
+		entity_names = []
 		for idx, col in enumerate(execute.description):
 			t[col[0]] = row[idx]
 
-		entity_names = []
-		sentences = nltk.sent_tokenize(t['content'])
-		tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
-		tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
-		chunked_sentences = nltk.ne_chunk_sents(tagged_sentences, binary=False)
-		for tree in chunked_sentences:
-		    entity_names.extend(extract_entity_names(tree))
-
 		# We search our own database to find more entities
 		existed_entities = db.query("select * from ETY")
+		found_entities = []
 		for entity_row in existed_entities:
 			# we direct access the name of entity by the index, 0 means the id, 1 means the name, 2 means the source, 3 for type, 9 for comment
 			entity = entity_row[1]
@@ -115,6 +112,14 @@ def get_conversation_from_DB():
 				entity_record = []
 				entity_record.append({'term':entity_row[1], 'type':entity_row[3], 'isAuto':True, 'comment':entity_row[9]})
 				entity_names.extend(entity_record)
+				found_entities.append(entity_row[1])
+
+		sentences = nltk.sent_tokenize(t['content'])
+		tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
+		tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
+		chunked_sentences = nltk.ne_chunk_sents(tagged_sentences, binary=False)
+		for tree in chunked_sentences:
+		    entity_names.extend(extract_entity_names(tree, found_entities))
 
 		t['entity'] = entity_names
 		# print(entity_names)
