@@ -70,7 +70,8 @@ h1, h2, h3, h4, p {
     height: 230px;
     font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     float: left;
-    margin-left: 10px;   
+    margin-left: 10px;
+    overflow: scroll;
 }
 
 .entity_view {
