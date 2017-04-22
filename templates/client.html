@@ -11,7 +11,6 @@
   <script src="{{ url_for('static', filename='main.js') }}"></script>
   
   <script type="text/javascript">
-  	// get a tweet, entity type: org -> organization, psn -> person, loc -> location
   	var tweets = {{ tweets | tojson }};
     var links = {{ links | tojson }};
 
@@ -75,11 +74,12 @@
       tweets.forEach(function(tweet){
         var entities = tweet['entity'];
         entities.forEach(function(entity){
-          if(entity.hasOwnProperty('npo'))
+          if(entity.hasOwnProperty('npo')){
               html += "<li>" + entity.npo + " <-> " + entity.ety;
               if(entity.hasOwnProperty('comment') && entity.comment.length > 0)
                 html += "<br><font color='#888'>Comment: " + entity.comment + "</font>"  
               html += "</li>";
+          }
         });
       });
 
@@ -143,9 +143,10 @@
         <p>NPO: <input type="text" name="Entity1"> &nbsp;&nbsp; Entity: <input type="text" name="Entity2"><br><br></p>
         <p>Type: <select id="selectType">
                   <option selected="true" disabled="disabled">Choose type</option>
-                  <option value="org"><b>Organization</b></option>
-                  <option value="loc"><b>Location</b></option>
-                  <option value="psn"><b>Person</b></option>
+                  <option value="ORGANIZATION"><b>ORGANIZATION</b></option>
+                  <option value="LOCATION"><b>LOCATION</b></option>
+                  <option value="PERSON"><b>PERSON</b></option>
+                  <option value="OTHERS"><b>OTHERS</b></option>
                 </select>
         &nbsp; Comments: <textarea id="recComment" rows="5" cols="15" style="vertical-align:top;"></textarea></p>
         <br><p><button type="button" onclick="addNewEntity()">Add</button></p>

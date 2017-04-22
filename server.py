@@ -14,7 +14,8 @@ import datetime
 
 app = flask.Flask(__name__, static_url_path='/static') # Create application
 app.config.from_object(config)                         # Currently has no real effect
-nltk.data.path.append("/Users/jianqiaoliu/Downloads/nltk_data")
+# nltk.data.path.append("/Users/jianqiaoliu/Downloads/nltk_data")
+nltk.data.path.append("E:/nltk_data")
 
 # global variable to store real-time tweets
 tweetDB = {}
@@ -25,9 +26,6 @@ _g_conversation_counter = 0
 # 	api = TwitterAPI()
 # 	api.stream(tweetDB)
 
-entity_abbr = {'PERSON':'psn', 'ORGANIZATION':'org', 'LOCATION':'loc'}
-entity_reverse = {'psn':'PERSON', 'org':'ORGANIZATION', 'loc':'LOCATION'}
-
 def extract_entity_names(t):
     entity_names = []
 
@@ -35,7 +33,7 @@ def extract_entity_names(t):
 #    	print "%s  --> %s"%(t, t.label())
         if t.label() == 'PERSON' or t.label() == 'ORGANIZATION' or t.label() == 'LOCATION':
             # pdb.set_trace()
-            entity_names.append({'term':' '.join([child[0] for child in t]), 'type':entity_abbr[t.label()], 'isAuto':True, 'comment':''})
+            entity_names.append({'term':' '.join([child[0] for child in t]), 'type':t.label(), 'isAuto':True, 'comment':''})
         else:
             for child in t:
                 entity_names.extend(extract_entity_names(child))
@@ -176,7 +174,6 @@ def submit():
 #					print(entity['type'])
 #					print(entity['comment'])
 #					print(tweet['content'])
-					entity['type'] = entity_reverse[entity['type']]
 
 					npo_row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity['npo'])
 					if len(npo_row) == 0:
@@ -189,9 +186,9 @@ def submit():
 						 " values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (entity['ety'], entity['npo'], entity['type'], tweet['user'], "", tweet['content'], 0, "False", entity['comment']));
 
 	rows = db.query("select * from NPO")
-	print rows
+	# print rows
 	rows = db.query("select * from ETY")
-	print rows
+	# print rows
 	return "Answer received"
 
 
