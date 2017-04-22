@@ -33,43 +33,53 @@ def reset_ETY_DB():
 def reset_TWEETS_DB():
 		# GOOD:
 		db.query("DELETE FROM TWEETS where id > 0");
-		#Conversation 1
+#Conversation 1
 		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)",
-			                         ("jiawei", 
-			                         	datetime.datetime.now(), 
-			                         	"Hi, I study at Purdue University.",
-			                         	1));
-		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
-			                         ("jianqiao", 
-			                         	datetime.datetime.now(), 
-			                         	"Boilerup! Is it in Indiana?",
-			                         	1));
-		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
-			                         ("jiawei", 
-			                         	datetime.datetime.now(), 
-			                         	"Yup, the Hoosier State.", 
-			                         	1));
-		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
-			                         ("jianqiao", 
-			                         	datetime.datetime.now(),
-			                         	"Have you ever seen the RV-1 of your president?",  
-			                         	1));
-		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
-			                         ("jiawei", 
-			                         	datetime.datetime.now(), 
-			                         	"Sure, that's a very fancy RV!", 
+			                         ("Nick Decaro", 
+			                         	"1:31 PM - 22 Apr 2017", 
+			                         	"45 threatens to shut down government over funding for the wall that he promised Mexico would pay for.",
 			                         	1));
 #Conversation 2
 		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
-			                         ("A", 
-			                         	datetime.datetime.now(), 
-			                         	"I cannot believe 45 has won the election!",
+			                         ("Cain Snow", 
+			                         	"2:48 PM - 22 Feb 2017", 
+			                         	"First of his name. King of the Andals and the First Men, Lord of the Seven Kingdoms, and Protector of the Realm. Long may he reign.",
 			                         	2));
 		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
-			                         ("B", 
-			                         	datetime.datetime.now(), 
-			                         	"Neither I. Just look at what these rednecks do!",  
+			                         ("mat morgan", 
+			                         	"4:51 PM - 22 Feb 2017", 
+			                         	"The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.",
 			                         	2));
+#Conversation 3
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("Not Jerry Tipton", 
+			                         	"5:19 PM - 21 Apr 2017", 
+			                         	"Indiana fans celebrating the Hoosiers' most recent national championship.",
+			                         	3));
+#Conversation 4
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("yung da bejar", 
+			                         	"10:50 PM - 27 Mar 2017", 
+			                         	"I liked it overall but it felt very \"Oscar nominated movie\". will checkout Manchester soon ",  
+			                         	4));
+#Conversation 5
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("Hazha", 
+			                         	"3:06 PM - 19 Apr 2017", 
+			                         	"United #Overbooked hazha.com/yay/xGg",  
+			                         	5));
+#Conversation 6
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("Purdue Basketball", 
+			                         	"7:01 PM - 8 Apr 2017", 
+			                         	"SEE YA!! Logan Poisall goes big fly to left field. #Purdue's 2nd 2-run blast tonight. It's 6-0 #Boilermakers as they've jumped all over IU.",  
+			                         	6));
+#Conversation 7
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("Kevin-Economy&Beyond", 
+			                         	"4:23 AM - 18 Aug 2016", 
+			                         	"This will not amuse The Great Successor. BBC News -China to restrict North Korea's Air Koryo after emergency landing",  
+			                         	7));
 
 #if __name__=="__main__":
 def test_DB():

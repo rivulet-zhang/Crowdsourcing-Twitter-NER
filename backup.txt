@@ -1,0 +1,42 @@
+
+def reset_TWEETS_DB():
+		# GOOD:
+		db.query("DELETE FROM TWEETS where id > 0");
+		#Conversation 1
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)",
+			                         ("jiawei", 
+			                         	datetime.datetime.now(), 
+			                         	"Hi, I study at Purdue University.",
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("jianqiao", 
+			                         	datetime.datetime.now(), 
+			                         	"Boilerup! Is it in Indiana?",
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("jiawei", 
+			                         	datetime.datetime.now(), 
+			                         	"Yup, the Hoosier State.", 
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("jianqiao", 
+			                         	datetime.datetime.now(),
+			                         	"Have you ever seen the RV-1 of your president?",  
+			                         	1));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("jiawei", 
+			                         	datetime.datetime.now(), 
+			                         	"Sure, that's a very fancy RV!", 
+			                         	1));
+#Conversation 2
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("A", 
+			                         	datetime.datetime.now(), 
+			                         	"I cannot believe 45 has won the election!",
+			                         	2));
+		db.query("INSERT INTO TWEETS (user, tweet_time, content, convers_id) values (?, ?, ?, ?)", 
+			                         ("B", 
+			                         	datetime.datetime.now(), 
+			                         	"Neither I. Just look at what these rednecks do!",  
+			                         	2));
+
