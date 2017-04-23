@@ -23,7 +23,10 @@ else:
 # global variable to store real-time tweets
 tweetDB = {}
 _g_conversation_counter = 0
-_g_use_Crowd_DB = 0
+
+# When the flag is set to 1, we will use our complete database to show the full result
+# Otherwise, we just show the machine result and let the crowd do the recognize & link entities
+_g_use_Crowd_DB = 1			
 
 # Package the entity information for front-end display
 def extract_entity_names(t, found_entities):
