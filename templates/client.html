@@ -33,6 +33,8 @@
 
     function updateVis(){
 
+      var _entities = {};
+
       //polulate tweets with color on entities
       var tweets_tagged = tweets.map(function(tweet){
         return styling_tweet_entity(tweet);
@@ -51,6 +53,7 @@
         entities.forEach(function(entity){
           if(entity.hasOwnProperty('term'))
             html += "<li>" + entity.term + " -> " + "<font color='" + get_entity_color(entity.type) + "'><b>" + entity.type + "</b></font>";
+            _entities[entity.term] = true;
             // if(entity.hasOwnProperty('comment') && entity.comment.length > 0 )
             //   html += "<br><font color='#888'>Comment: " + entity.comment + "</font>"  
             html += "</li>";
@@ -65,7 +68,10 @@
 
       //existing links provided by the back-end
       links.forEach(function(link){
-        html += "<li>" + link.npo + " <-> " + link.ety;
+        if(_entities.hasOwnProperty(link.ety))
+          html += "<li>" + link.ety + " <-> " + link.npo;
+        else  
+          html += "<li>" + link.npo + " <-> " + link.ety;
         if(link.hasOwnProperty('comment') && link.comment.length > 0)
           html += "<br><font color='#888'>Comment: " + link.comment + "</font>"  
         html += "</li>";
@@ -75,7 +81,10 @@
         var entities = tweet['entity'];
         entities.forEach(function(entity){
           if(entity.hasOwnProperty('npo')){
-              html += "<li>" + entity.npo + " <-> " + entity.ety;
+              if(_entities.hasOwnProperty(entity.ety))
+                html += "<li>" + entity.ety + " <-> " + entity.npo;
+              else  
+                html += "<li>" + entity.npo + " <-> " + entity.ety;
               if(entity.hasOwnProperty('comment') && entity.comment.length > 0)
                 html += "<br><font color='#888'>Comment: " + entity.comment + "</font>"  
               html += "</li>";
@@ -104,7 +113,8 @@
       }
 
       //keyword existence check
-      if(!check_term_exist_in_tweets(tweets, npo) || !check_term_exist_in_tweets(tweets, ety) ){
+      // if(!check_term_exist_in_tweets(tweets, npo) || !check_term_exist_in_tweets(tweets, ety) ){
+      if(!check_term_exist_in_tweets(tweets, npo)){
         alert("entity not exist!");
         return;
       }
