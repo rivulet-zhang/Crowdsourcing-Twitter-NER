@@ -23,14 +23,17 @@ else:
 # global variable to store real-time tweets
 tweetDB = {}
 _g_conversation_counter = 0
+_g_use_Crowd_DB = 0
 
+# Package the entity information for front-end display
 def extract_entity_names(t, found_entities):
     entity_names = []
     if hasattr(t, 'label') and t.label :
         if t.label() == 'PERSON' or t.label() == 'ORGANIZATION' or t.label() == 'LOCATION':
-            # pdb.set_trace()
     		name = ' '.join([child[0] for child in t])
     		found = False;
+    		# Check whether this entity has already been included by other crowd-recognized entity. If included, drop this entity
+    		# We set human priority higher than machines
     		for entity in found_entities:
     			if entity.find(name) != -1:
     				found = True
@@ -43,53 +46,13 @@ def extract_entity_names(t, found_entities):
 
     return entity_names
 
-
-# entity type: org -> organization, psn -> person, loc -> location
-def test_add_tweet():
-	tweets = []
-	t1 = {}
-	t1['id'] = 100
-	t1['user'] = 'U1'
-	t1['tweet_time'] = datetime.datetime.now()
-	t1['content'] = 'Hey there! I study at Purdue University.'
-	t1['entity'] = []
-	t1['entity'].append({'type':'org', 'term':'Purdue University', 'isAuto':True, 'comment':''})
-
-	t2 = {}
-	t2['id'] = 101
-	t2['user'] = 'U2'
-	t2['tweet_time'] = datetime.datetime.now()
-	t2['content'] = 'BoilerUp!'
-	t2['entity'] = []
-
-	tweets.append(t1);
-	tweets.append(t2);
-
-	conversationId = 1
-
-	tweetDB[conversationId] = tweets
-	# print(type(t2['entity']))
-
-
-# # ajax call initiated by client to get a new tweet from server
-# @app.route('/gettweet', methods=['GET'])
-# def getTweet():
-# 	return ""
-
-def get_conversation():
-	tweets = list(tweetDB.values());
-	print("All is well")
-	print(tweets[0])
-	if len(tweets) <= 0:
-		print("not enough tweets")
-	else:
-		return tweets[0]
-
+# Each time we get a new tweet conversation
 def get_conversation_from_DB():
 	global _g_conversation_counter
-#	_g_conversation_counter = _g_conversation_counter + 1
-	_g_conversation_counter = 1
-	sql = "SELECT * from TWEETS WHERE convers_id=%d" % (_g_conversation_counter+1)
+	# In our evaluation, there are only 7 tweets in total. We repeated process them (from 1 to 7)
+	_g_conversation_counter = (_g_conversation_counter + 1) % 8
+#	_g_conversation_counter = 1
+	sql = "SELECT * from TWEETS WHERE convers_id=%d" % (_g_conversation_counter)
 	parameters=()
 	conn = db.get_connection()
 	execute = conn.execute(sql, parameters)
@@ -102,7 +65,7 @@ def get_conversation_from_DB():
 		for idx, col in enumerate(execute.description):
 			t[col[0]] = row[idx]
 
-		# We search our own database to find more entities
+		# We search our own database to find recognized entities
 		existed_entities = db.query("select * from ETY")
 		found_entities = []
 		for entity_row in existed_entities:
@@ -114,6 +77,7 @@ def get_conversation_from_DB():
 				entity_names.extend(entity_record)
 				found_entities.append(entity_row[1])
 
+		# We use the "NLTK" tool kit to automatically process entities
 		sentences = nltk.sent_tokenize(t['content'])
 		tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
 		tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
@@ -128,35 +92,28 @@ def get_conversation_from_DB():
 #	print(tweets)
 	return tweets
 
-def get_link(tweets):
-	# print(tweets)
-	# print(type(tweets))
-	return [{'npo':'Purdue University','ety':'BoilerUp','comment':''}]
-
 def get_link_from_DB(tweets):
 	links = []
 	for tweet in tweets:
 		if len(tweet['entity']) != 0:
 			for entity in tweet['entity']:
+				# We search the entity link from the ETY table
+				# We assume the standard name of NPO has already been handled by machine, or it's well-known, so we ignore them
 				_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % entity['term'])
 				if len(_row) != 0:
 					comment = {'user':_row[0][4], 'context':_row[0][6], 'comment':_row[0][9]}
 					comment = json.dumps(comment)
 					links.append({'npo':_row[0][2],'ety':entity['term'],'comment':comment})
 
-	print('*****links begin*****')
-	print(links)
-	print('*****links end*****')
+#	print('*****links begin*****')
+#	print(links)
+#	print('*****links end*****')
 	return links
 
 # default page for client html
 @app.route('/')
 def client():
-
-	# tweets = get_conversation();
 	tweets = get_conversation_from_DB();
-	# print(tweets)
-	# links = get_link(tweets)
 	links = get_link_from_DB(tweets)
 	return flask.render_template("client.html", tweets=tweets, links=links)
 
@@ -164,7 +121,6 @@ def client():
 def submit():
 
 	rst = flask.request.form
-
 	tweets = json.loads(rst['tweetsResult'])['tweets']
 	# links = json.loads(rst['linksResult'])['links']
 
@@ -172,38 +128,37 @@ def submit():
 		if len(tweet['entity']) != 0:
 			for entity in tweet['entity']:
 				if 'npo' in entity:
-					# code here
-#					print("\nentity information")
-#					print(entity['npo'])
-#					print(entity['ety'])
-#					print(entity['type'])
-#					print(entity['comment'])
-#					print(tweet['content'])
-
 					npo_row = db.query("SELECT * from NPO WHERE name=\'%s\'" % entity['npo'])
+					# If record could not be found from NPO table, create a new record
 					if len(npo_row) == 0:
 						db.query("INSERT INTO NPO (name, class, description, dest) values (?, ?, ?, ?)", 
 							(entity['npo'], entity['type'], "https://en.wikipedia.org/wiki/" + entity['npo'], entity['ety']));
-					# ELSE, UPDATE NPO RECORD
+					# Else, update existing record
+					else:
+						new_dest = npo_row[0][4] + ", " + entity['ety']
+						sql = "UPDATE NPO SET dest=%s WHERE name=%s" % (new_dest, entity['npo'])
+						db.query(sql);
+
+					# Insert a new entity into ETY table
 					ety_row = db.query("SELECT * from ETY WHERE name=\'%s\'" % entity['ety'])
 					if len(ety_row) == 0:
 						db.query("INSERT INTO ETY (name, source, class, user, tweet_time, context, convers_id, isAuto, comment) " +
 						 " values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (entity['ety'], entity['npo'], entity['type'], tweet['user'], "", tweet['content'], 0, "False", entity['comment']));
 
-	rows = db.query("select * from NPO")
+#	rows = db.query("select * from NPO")
 	# print rows
-	rows = db.query("select * from ETY")
+#	rows = db.query("select * from ETY")
 	# print rows
 	return "Answer received"
 
 
 if __name__=="__main__":
 	with app.app_context():
-		# run server and twitter api concurrently
-		# Thread(target = start_twitter_api).start()
-		# test_add_tweet()
-		prepare.test_DB()
-#		get_conversation()
-		# tweets = get_conversation_from_DB()
-		# get_link_from_DB(tweets)
+		if _g_use_Crowd_DB == 1:
+			prepare.test_DB()
+		else:
+			prepare.clean_up_NPO_DB()
+			prepare.clean_up_ETY_DB()
+			prepare.prepare_TWEETS_DB()
 		app.run(host="127.0.0.1", port=8080, debug=False, use_debugger=False, use_evalex=False)
+
