@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Project Milestone 3 Introduction [ece695cps]</title>
+<title>Project Report [ece695cps]</title>
 
 <style>
 	body {
@@ -25,32 +25,37 @@
 	}
 
 	h1 {
-		font-size: 28px;
+		font-size: 26px;
 	}
 </style>
 
 </head>
 <body>
 
-<h1>A Crowdsourcing Approach to Interactive Named-Entity Recognition in Twitter</h1>
+<h1>A Context-Dependent Crowdsourcing Approach for Entity Recognition and Linking on Tweets</h1>
+<p><i>This is a course project at Purdue University taught by Prof.Alex Quinn.</i></p>
 
 <h2>Team Members</h2>
-Jiawei Zhang, Jianqiao Liu
+Jiawei Zhang (<a href="mailto:zhan1486@purdue.edu">zhan1486@purdue.edu</a>) and Jianqiao Liu (<a href="mailto:liu1274@purdue.edu">liu1274@purdue.edu</a>)
 
 <h2>Introduction</h2>
-<p>Named-Entity Recognition has long been a key issue in text mining and natural language processing fields. While existing approaches are proved to be effective on standard text, their performance is severely degraded on social media text such as tweets. To this end, we introduce a crowdsourcing approach toward effective named-entity recognition on tweets. Our approach utilizes the automatic NLP methods to pre-process tweets and extract potential named-entities, and then asks the workers to verify and disambiguate the automatically-generated results through an intelligent visual interactive interface. The effectiveness of our approach is validated through a pilot user evaluation.
+<p>A named-Entity is a term or a phrase that identifies a real-world object. Typical examples include names of person, organization, location, brand, etc. Named-Entity Recognition has long been a key issue in text mining and natural language processing fields. While existing approaches are proved to be effective in standard text such as published articles and news media, their performance severely degrades on social media text such as tweets, where people tend to use informal grammar and obscure words. To this end, we introduce a crowdsourcing approach toward effective named-entity recognition on tweets. Our approach primarily focuses on entities that are dependent on the contextual information of the tweet or the conversation, as these entities vary across context and are challenging for conventional techniques. Our approach utilizes the automatic linguistic tools to pre-process tweets and extract potential named-entities, and then involves the workers to verify and disambiguate the automatically-generated results through an intelligent visual interactive interface. In the rest of this blog, we discuss related work in terms both automatic and crowdsourcing aspects, describe our techniques in details, and provide a system demo as well as preliminary results.</p>
 
-<h2>Research Problem</h2>
+<!-- <h2>Research Problem</h2>
 Recognize named-entity in Twitter messsage. In the project, we specifically focus on three types of named-entities: names of person, organization and location. We focus on three sub-tasks.
 <ul>
 <li>Identify the word or the phrase that is a named-entity and choose the type of the entity.</li>
 <li>Disambiguate an entity by expanding the entity or providing supporting information.</li>
 <li>Link entities that refer to the same object.</li>
-</ul>
+</ul> -->
 
-<h2>Approach and Validation</h2>
+<h2>Related Work</h2>
 
-<p style="text-align:center;"><img src="project.PNG" alt="interface" style="width:720px;"><br>Fig 1. The mock-up interface of the approach.</p>
+
+
+<h2>Approach and Implementation</h2>
+
+<p style="text-align:center;"><img src="resources/project.PNG" alt="interface" style="width:720px;"><br>Fig 1. The mock-up interface of the approach.</p>
 
 <b>How to organize data?</b>
 <br>
@@ -95,6 +100,12 @@ We provide two different views to show the result. In the tweet-centric view, we
 We will recruit 5-10 workers to recognize named-entities of real-time Twitter streams from a relative small region, so that the number of tweets won't be so many that would add cognitive overload to the users. The workers will be asked to work collaboratively. Each session will last for 20 minutes. The entities detected by the users will be compared with the automatic approaches.
 <br>
 <br>
+
+<h2>Evaluation and Results</h2>
+
+<h2>Conclusion</h2>
+
+<h2>Acknowledgements</h2>
 
 <h2>References</h2>
 <ul>
