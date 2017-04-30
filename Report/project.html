@@ -72,9 +72,9 @@ For supervised approaches, various learning models have been applied to tackle t
 
 <p>Based on our discovery, we design a crowd sourcing approach to effectively recognize entities in tweets. Our system can not only help people with no background knowledge understand the context more easily, but also help machine learning algorithms learn more effectively. We design our NER is three steps:
 
-<p>1.	Query the user tweets with our crowd knowledge database, and mark all the entities that have already been recognized</p>
+<p>1.	Query the user tweets with our crowd knowledge database, and mark all the entities that have already been recognized. Long entities, especially those presented as a word sequence, are masked from following machine algorithm. Because machine algorithm usually recognize these long entities as single words or shorter word sequence in our practice. </p>
 
-<p>2.	Use standard NLTK (Natural Language Toolkit 3.0) to process the tweets. In this process, we ignore the entities marked in the first. And due to the time limitation, we only consider three categories: the person, the organization and the location. </p>
+<p>2.	Use standard NLTK (Natural Language Toolkit 3.0) to process the tweets. We ignore the entities marked in the first step. And due to the time limitation, we only consider three categories: the person, the organization and the location. </p>
 
 <p>3.	Ask the crowd sourcing to correct the recognition results from previous steps and add entities that have not been recognized. The crowd modified result will be updated into knowledge database.
 </p>
