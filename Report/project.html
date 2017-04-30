@@ -94,7 +94,7 @@ Compared to the existing work, our approach primarily focuses on the named-entit
 
 
 <h2> Design</h2>
-<p>To address the obscure words problem, we expect a perfect natural language processing (NLP) algorithm that can automatically partition the sentences, extract the tokens, analyze the context and tag the tokens with necessary descriptions. However, in practice, we find that event the state-of-the-art natural language processing algorithms are far away from satisfactory. On one hand, NLP algorithms perform well at “word” level extraction, but fail at understanding and capture words (combinations) that people use for convention or amusement. For example, the NLP would treat the “Hoosiers” as an organization name in the tweet “Indiana fans celebrating the Hoosiers' most recent national championship”. Actually here the “Hoosiers” just means the Indiana state. On the other hand, there are many words created in our culture. Even the normal words we used for a long history may be given new meanings. For example, “The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.” It looks like all words here are just normal use, but people who haven’t read/watched the Game of the Throne can hardly understand these words’ real meaning. All these five phrases are the title of Daenerys Targaryen, a key role in the novel/movie.
+<p>To address the obscure words problem, we expect a perfect natural language processing (NLP) algorithm that can automatically partition the sentences, extract the tokens, analyze the context and tag the tokens with necessary descriptions. However, in practice, we find that event the state-of-the-art natural language processing algorithms are far away from satisfactory. On one hand, NLP algorithms perform well at "word" level extraction, but fail at understanding and capture words (combinations) that people use for convention or amusement. For example, the NLP would treat the "Hoosiers" as an organization name in the tweet "Indiana fans celebrating the Hoosiers' most recent national championship". Actually here the "Hoosiers" just means the Indiana state. On the other hand, there are many words created in our culture. Even the normal words we used for a long history may be given new meanings. For example, "The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons." It looks like all words here are just normal use, but people who haven't read/watched the Game of the Throne can hardly understand these words' real meaning. All these five phrases are the title of Daenerys Targaryen, a key role in the novel/movie.
 </p>
 
 <p style="text-align:center;"><img src="resources/workflow.png" alt="interface" style="width:600px;"><br>Fig 1. The workflow of the system</p>
@@ -103,7 +103,7 @@ Compared to the existing work, our approach primarily focuses on the named-entit
 
 <p>1.	Query the user tweets with our crowd knowledge database, and mark all the entities that have already been recognized. Long entities, especially those presented as a word sequence, are masked from following machine algorithm. Because machine algorithm usually recognize these long entities as single words or shorter word sequence in our practice. </p>
 
-<p>2.	Use standard NLTK (Natural Language Toolkit 3.0) to process the tweets. We ignore the entities marked in the first step. And due to the time limitation, we only consider three categories: the person, the organization and the location. </p>
+<p>2.	Use <a href="http://www.nltk.org/" title="Natural Language Toolkit 3.0">standard NLTK (Natural Language Toolkit 3.0)</a> to process the tweets. We ignore the entities marked in the first step. And due to the time limitation, we only consider three categories: the person, the organization and the location. </p>
 
 <p>3.	Ask the crowd sourcing to correct the recognition results from previous steps and add entities that have not been recognized. The crowd modified result will be updated into knowledge database.
 </p>
@@ -129,7 +129,7 @@ When the crowd knowledge database detects an entity, the back-end will query the
 </p>
 
 <p>
-When the crowd find a new entity, or correct an existing entity from tweets, they need to specify a NPO name for the entity. If the NPO name could be searched from our NPO table, we will create a new DES in ETY table, and add it into the “destination” of that NPO SRC. Otherwise, we need to create both a DES in ETY table and a SRC in NPO table and link them together. In both conditions, we prefer the workers to add some comments about why they link them and will show the comments when the link is searched in the future.
+When the crowd find a new entity, or correct an existing entity from tweets, they need to specify a NPO name for the entity. If the NPO name could be searched from our NPO table, we will create a new DES in ETY table, and add it into the "destination" of that NPO SRC. Otherwise, we need to create both a DES in ETY table and a SRC in NPO table and link them together. In both conditions, we prefer the workers to add some comments about why they link them and will show the comments when the link is searched in the future.
 </p>
 
 <p>
@@ -152,8 +152,7 @@ When people post tweets, they often use obscure or vague words that are not easy
 <p style="text-align:center;"><img src="resources/Great Successor.png" alt="interface" style="width:360px;"><br>Fig 9. Great Successor</p>
 
 
-<h2>Results</h2>
-
+<h2>Results and System Demo</h2>
 
 <table>
   <tr>
@@ -247,10 +246,18 @@ When people post tweets, they often use obscure or vague words that are not easy
   </tr>
 </table>
 
+<div align="center">
+<p><video width="640" height="384" controls>
+  <source src="resources/project.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</p>
+</div>
 
 <h2>Conclusion</h2>
 
 <h2>Acknowledgements</h2>
+We thank Prof.Alex Quinn for his great guidance on this course project.
 
 <!-- <h2>Approach and Implementation</h2>
 
@@ -264,27 +271,27 @@ Our system will be based on a client-server architecture. The server captures th
 
 <b>What does the UI look like?</b>
 <br>
-There will be a tabular view to interact with the participants (Fig 1). The content of the tabular view includes a textbox, a table, a “Next” button and an “Update” field:
+There will be a tabular view to interact with the participants (Fig 1). The content of the tabular view includes a textbox, a table, a "Next" button and an "Update" field:
 The textbox shows a tweet assigned to the participant. These entities that have already been recognized by our system will be highlighted.
-The table lists every entity recognized in the tweet and these other entities potentially related with it. These “potentially related entities” are extracted from our database.
+The table lists every entity recognized in the tweet and these other entities potentially related with it. These "potentially related entities" are extracted from our database.
 <br>
 <br>
-If the participant is satisfied with the automatically generated result, he/she should click the “Next” button and get a new tweet. The result of the old tweet will be confirmed (explained in the question below). 
-Otherwise, the participant is asked to filled in the separate “Update” field. The layout of the field is similar to this: Keyword: <i>45</i>; Entity: <i>Trump</i>; Comment: <i>...</i>;  “Update” button.
+If the participant is satisfied with the automatically generated result, he/she should click the "Next" button and get a new tweet. The result of the old tweet will be confirmed (explained in the question below). 
+Otherwise, the participant is asked to filled in the separate "Update" field. The layout of the field is similar to this: Keyword: <i>45</i>; Entity: <i>Trump</i>; Comment: <i>...</i>;  "Update" button.
 <br>
 <br>
 
 <b>How does the user interact with the system?</b>
 <br>
-If the participant click the “Next” button, our system will submit the result to our background. All unmodified result will increase its “Strength” attribute by 1. 
-If the participant add some new entities and connections, our system will use the time of the tweet, all the entities in the tweet and the comment to create a new entity. The connects are initialized with “Strength = 1”.
+If the participant click the "Next" button, our system will submit the result to our background. All unmodified result will increase its "Strength" attribute by 1. 
+If the participant add some new entities and connections, our system will use the time of the tweet, all the entities in the tweet and the comment to create a new entity. The connects are initialized with "Strength = 1".
 <br>
 <br>
 
 <b>How to update the data collected from participants?</b>
 <br>
-Each entity has connections with other entities. These connections are measured by their “Strength” attribute. When the participant agrees with an existing connection, its “Strength” value will be increased and vice versa. The connection will be deleted once its strength drops below some threshold.
-In the result page, these connection are shown in the order of their “Strength” value. 
+Each entity has connections with other entities. These connections are measured by their "Strength" attribute. When the participant agrees with an existing connection, its "Strength" value will be increased and vice versa. The connection will be deleted once its strength drops below some threshold.
+In the result page, these connection are shown in the order of their "Strength" value. 
 <br>
 <br>
 
