@@ -27,6 +27,23 @@
 	h1 {
 		font-size: 26px;
 	}
+	
+	table {
+	    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+	    border-collapse: collapse;
+	    width: 100%;
+	    font-size: 14px;
+    }
+
+	td, th {
+		border: 1px solid #999;
+		text-align: left;
+		padding: 8px;
+	}
+
+	th {
+		background-color: #ccc;
+	}
 </style>
 
 </head>
@@ -54,7 +71,7 @@ Recognize named-entity in Twitter messsage. In the project, we specifically focu
 <!-- <a href="http://dx.doi.org/" title=""></a> -->
 
 <h2>Related Work</h2>
-<p><a href="http://dx.doi.org/10.1075/li.30.1.03nad" title="Nadeau, David, and Satoshi Sekine. A survey of named entity recognition and classification. Lingvisticae Investigationes 30.1 (2007): 3-26.">Named-Entity Recognition</a> is one of the primary tasks in natural language processing field (NER).
+<p><a href="http://dx.doi.org/10.1075/li.30.1.03nad" title="Nadeau, David, and Satoshi Sekine. A survey of named entity recognition and classification. Lingvisticae Investigationes 30.1 (2007): 3-26.">Named-Entity Recognition</a> (NER) is one of the primary tasks in natural language processing field.
 In general, NER extracts structured knowledge from the unstructured text, which can further be utilized as meaningful features for text mining and maching learning.
 NER-related research consists of two primary directions: the machine learning paradigm and the human-driven paradigm.
 In this section, we provide an overview of the two fields respectively.</p>
@@ -68,7 +85,7 @@ For supervised approaches, various learning models have been applied to tackle t
 <p>To address the obscure words problem, we expect a perfect natural language processing (NLP) algorithm that can automatically partition the sentences, extract the tokens, analyze the context and tag the tokens with necessary descriptions. However, in practice, we find that event the state-of-the-art natural language processing algorithms are far away from satisfactory. On one hand, NLP algorithms perform well at “word” level extraction, but fail at understanding and capture words (combinations) that people use for convention or amusement. For example, the NLP would treat the “Hoosiers” as an organization name in the tweet “Indiana fans celebrating the Hoosiers' most recent national championship”. Actually here the “Hoosiers” just means the Indiana state. On the other hand, there are many words created in our culture. Even the normal words we used for a long history may be given new meanings. For example, “The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.” It looks like all words here are just normal use, but people who haven’t read/watched the Game of the Throne can hardly understand these words’ real meaning. All these five phrases are the title of Daenerys Targaryen, a key role in the novel/movie.
 </p>
 
-<p style="text-align:center;"><img src="resources/workflow.png" alt="interface" style="width:720px;"><br>Fig 1. The workflow of the system</p>
+<p style="text-align:center;"><img src="resources/workflow.png" alt="interface" style="width:600px;"><br>Fig 1. The workflow of the system</p>
 
 <p>Based on our discovery, we design a crowd sourcing approach to effectively recognize entities in tweets. Our system can not only help people with no background knowledge understand the context more easily, but also help machine learning algorithms learn more effectively. We design our NER is three steps:
 
@@ -82,7 +99,7 @@ For supervised approaches, various learning models have been applied to tackle t
 
 
 <h2>Implementation</h2>
-<p style="text-align:center;"><img src="resources/UI.png" alt="interface" style="width:1024px;"><br>Fig 2. The user interface of the system</p>
+<p style="text-align:center;"><img src="resources/UI.png" alt="interface" style="width:720px;"><br>Fig 2. The user interface of the system</p>
 <p>
 Our target is to recognize obscure words in tweets as meaningful entities and link them to some other entities that are easier to understand/track. We organize the whole task with two separate database tables: the NPO table and ETY table.
 </p>
@@ -108,7 +125,122 @@ We strongly recommend the worker to use the most widely known name as SRC's name
 </p>
 
 
-<h2>Approach and Implementation</h2>
+
+<h2>Evaluation method</h2>
+
+Social networking applications are widely used in our daily lives. People use these tools to connect to the outside world, and share their opinions with their friends.
+When people post tweets, they often use obscure or vague words that are not easy to understand. But when we try to search for related public database, but there are no special research for obscure words up to now. To satisfy the time limit as a course project, we manually capture seven representative tweets from Twitter. These seven tweets come from different people and cover various topics. We believe they can evaluate the effectiveness of our system.
+
+<p style="text-align:center;"><img src="resources/45.png" alt="interface" style="width:360px;"><br>Fig 3. 45 to Donald Trump</p>
+<p style="text-align:center;"><img src="resources/Daenerys Targaryen.png" alt="interface" style="width:360px;"><br>Fig 4. Daenerys Targaryen</p>
+<p style="text-align:center;"><img src="resources/Hoosiers.png" alt="interface" style="width:360px;"><br>Fig 5. Hoosiers to Indiana</p>
+<p style="text-align:center;"><img src="resources/Manchester.png" alt="interface" style="width:360px;"><br>Fig 6. Oscar to Academy Awards</p>
+<p style="text-align:center;"><img src="resources/United.png" alt="interface" style="width:360px;"><br>Fig 7. United to United Airlines</p>
+<p style="text-align:center;"><img src="resources/Purdue.png" alt="interface" style="width:360px;"><br>Fig 8. Purdue University</p>
+<p style="text-align:center;"><img src="resources/Great Successor.png" alt="interface" style="width:360px;"><br>Fig 9. Great Successor</p>
+
+
+<h2>Results</h2>
+
+
+<table>
+  <tr>
+    <th>Tweet Content</th>
+    <th>Entities Extracted by Machine</th>
+    <th>Entities Tuned by Workers</th>
+  </tr>
+  <tr>
+    <td>45 threatens to shut down government over funding for the wall that he promised Mexico would pay for.</td>
+    <td>None</td>
+    <td>
+      45 (PERSON) -> Donald Trump
+    </td>
+  </tr>
+  <tr>
+    <td>
+      First of his name. King of the Andals and the First Men, Lord of the Seven Kingdoms, and Protector of the Realm. Long may he reign.<br>
+      <i>Reply:</i> The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons.
+    </td>
+    <td>
+      First Men (ORGANIZATION)<br>
+      Lord (ORGANIZATION)<br>
+      Seven Kingdoms (ORGANIZATION)<br>
+      Realm (ORGANIZATION)<br>
+      Unburnt Queen (ORGANIZATION)<br>
+      Queen (PERSON)<br>
+      Khaleesi (ORGANIZATION)<br>
+      Great Grass Sea (ORGANIZATION)<br>
+      Breaker (PERSON)<br>
+      Mother (PERSON)<br>
+    </td>
+    <td>
+      First of his name (PERSON) -> The King of the Seven Kingdoms<br>
+      King of the Andals and the First Men (PERSON) -> The King of the Seven Kingdoms<br>
+      Lord of the Seven Kingdoms (PERSON) -> The King of the Seven Kingdoms<br>
+      Protector of the Realm (PERSON) -> The King of the Seven Kingdoms<br>
+      The Unburnt Queen of the Andals (PERSON) -> Daenerys Targaryen<br>
+      Queen of Meereen (PERSON) -> Daenerys Targaryen<br>
+      Khaleesi of the Great Grass Sea (PERSON) -> Daenerys Targaryen<br>
+      Breaker of Chains (PERSON) -> Daenerys Targaryen<br>
+      Mother of Dragons (PERSON) -> Daenerys Targaryen<br>
+    </td>
+  </tr>
+  <tr>
+    <td>Indiana fans celebrating the Hoosiers' most recent national championship.</td>
+    <td>Hoosiers (ORGANIZATION)</td>
+    <td>
+      Hoosiers (LOCATION) -> Indiana<br>
+    </td>
+  </tr>
+  <tr>
+    <td>I liked it overall but it felt very "Oscar nominated movie". will checkout Manchester soon.</td>
+    <td>Oscar (PERSON)</td>
+    <td>
+      Oscar (ORGANIZATION) -> Academy Awards<br>
+      Manchester (OTHERS) -> Manchester by the Sea<br>
+    </td>
+  </tr>
+  <tr>
+    <td>United #Overbooked hazha.com/yay/xGg</td>
+    <td>None</td>
+    <td>
+      United (ORGANIZATION) -> United Airlines </td>
+  </tr>
+  <tr>
+    <td>Purdue Basketball: SEE YA!! Logan Poisall goes big fly to left field. #Purdue's 2nd 2-run blast tonight. It's 6-0 #Boilermakers as they've jumped all over IU.</td>
+    <td>
+      Logan (PERSON)<br>
+      Poisall (ORGANIZATION)<br>
+      Purdue (PERSON)<br>
+      IU (ORGANIZATION)<br>
+    </td>
+    <td>
+      Purdue (ORGANIZATION) -> Purdue University<br>
+      Boilermakers (ORGANIZATION) -> Purdue University<br>
+      Logan (PERSON)<br>
+      Poisall (ORGANIZATION)<br>
+      IU (ORGANIZATION)<br>
+    </td>
+  </tr>
+  <tr>
+    <td>This will not amuse the Great Successor. BBC News -China to restrict North Korea's Air Koryo after emergency landing.</td>
+    <td>
+      Great Successor (ORGANIZATION)<br>
+      BBC News (ORGANIZATION)
+    </td>
+    <td>
+      Great Successor (PERSON) -> Kim Jong-un<br>
+      BBC News (ORGANIZATION)
+    </td>
+  </tr>
+</table>
+
+
+<h2>Conclusion</h2>
+
+<h2>Acknowledgements</h2>
+
+<!-- <h2>Approach and Implementation</h2>
 
 <p style="text-align:center;"><img src="resources/project.PNG" alt="interface" style="width:720px;"><br>Fig 1. The mock-up interface of the approach.</p>
 
@@ -158,11 +290,7 @@ We will recruit 5-10 workers to recognize named-entities of real-time Twitter st
 
 <h2>Evaluation and Results</h2>
 
-<h2>Conclusion</h2>
-
-<h2>Acknowledgements</h2>
-
-<!-- <h2>References</h2>
+<h2>References</h2>
 <ul>
   <li>Zhai, Haijun, et al. "Web 2.0-based crowdsourcing for high-quality gold standard development in clinical natural language processing." Journal of medical Internet research 15.4 (2013): e73.
 </li>
