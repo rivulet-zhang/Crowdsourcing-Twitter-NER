@@ -58,18 +58,6 @@ Jiawei Zhang (<a href="mailto:zhan1486@purdue.edu">zhan1486@purdue.edu</a>) and 
 <h2>Introduction</h2>
 <p>A named-Entity is a term or a phrase that identifies a real-world object. Typical examples include names of person, organization, location, brand, etc. Named-Entity Recognition has long been a key issue in text mining and natural language processing fields. While existing approaches are proved to be effective in standard text such as published articles and news media, their performance severely degrades on social media text such as tweets, where people tend to use informal grammar and obscure words. To this end, we introduce a crowdsourcing approach toward effective named-entity recognition on tweets. Our approach primarily focuses on entities that are dependent on the contextual information of the tweet or the conversation, as these entities vary across context and are challenging for conventional techniques. Our approach utilizes the automatic linguistic tools to pre-process tweets and extract potential named-entities, and then involves the workers to verify and disambiguate the automatically-generated results through an intelligent visual interactive interface. In the rest of this blog, we discuss related work in terms both automatic and crowdsourcing aspects, describe our techniques in details, and provide a system demo as well as preliminary results.</p>
 
-<!-- <h2>Research Problem</h2>
-Recognize named-entity in Twitter messsage. In the project, we specifically focus on three types of named-entities: names of person, organization and location. We focus on three sub-tasks.
-<ul>
-<li>Identify the word or the phrase that is a named-entity and choose the type of the entity.</li>
-<li>Disambiguate an entity by expanding the entity or providing supporting information.</li>
-<li>Link entities that refer to the same object.</li>
-</ul> -->
-
-<!-- The <a href="http://dx.doi.org/10.1145/368481.368507" title="Donald E. Knuth. 1959. RUNCIBLE—algebraic translation on a limited computer. Commun. ACM 2, 11 (November 1959), 18-21.">Runcible</a> compiler supported algebraic translation on a limited computer. -->
-
-<!-- <a href="http://dx.doi.org/" title=""></a> -->
-
 <h2>Related Work</h2>
 <p><a href="http://dx.doi.org/10.1075/li.30.1.03nad" title="Nadeau, David, and Satoshi Sekine. A survey of named entity recognition and classification. Lingvisticae Investigationes 30.1 (2007): 3-26.">Named-Entity Recognition</a> is one of the primary tasks in natural language processing field (NER).
 In general, NER extracts structured knowledge from the unstructured text, which can further be utilized as meaningful features for text mining and machine learning.
@@ -91,8 +79,6 @@ Hence, <a href="http://dx.doi.org/10.14778/2350229.2350263" title="Wang, Jiannan
 Compared to the existing work, our approach primarily focuses on the named-entity that are ambiguous and need to be interpreted based on the contextual information in which the entity appears. We have also adopted a hybrid method that utilizes both the machine computation and human intelligence to more effectively recognize, disambiguate, and correlate entities in short text.
 </p>
 
-
-
 <h2> Design</h2>
 <p>To address the obscure words problem, we expect a perfect natural language processing (NLP) algorithm that can automatically partition the sentences, extract the tokens, analyze the context and tag the tokens with necessary descriptions. However, in practice, we find that event the state-of-the-art natural language processing algorithms are far away from satisfactory. On one hand, NLP algorithms perform well at "word" level extraction, but fail at understanding and capture words (combinations) that people use for convention or amusement. For example, the NLP would treat the "Hoosiers" as an organization name in the tweet "Indiana fans celebrating the Hoosiers' most recent national championship". Actually here the "Hoosiers" just means the Indiana state. On the other hand, there are many words created in our culture. Even the normal words we used for a long history may be given new meanings. For example, "The Unburnt Queen of the Andals, Queen of Meereen, Khaleesi of the Great Grass Sea, Breaker of Chains, Mother of Dragons." It looks like all words here are just normal use, but people who haven't read/watched the Game of the Throne can hardly understand these words' real meaning. All these five phrases are the title of Daenerys Targaryen, a key role in the novel/movie.
 </p>
@@ -107,8 +93,6 @@ Compared to the existing work, our approach primarily focuses on the named-entit
 
 <p>3.	Ask the crowd sourcing to correct the recognition results from previous steps and add entities that have not been recognized. The crowd modified result will be updated into knowledge database.
 </p>
-
-
 
 <h2>Implementation</h2>
 <p style="text-align:center;"><img src="resources/UI.png" alt="interface" style="width:720px;"><br>Fig 2. The user interface of the system</p>
@@ -136,6 +120,7 @@ When the crowd find a new entity, or correct an existing entity from tweets, the
 We strongly recommend the worker to use the most widely known name as SRC's name. The SRC's name is the unique keyword we define a person/place/object in our system. For current step, we can not avoid the duplication in NPO by machine, but we may potentially use crowd source to do this in the future. The description of SRC could be a link to a Wikipedia webpage, or a piece of words written by the user.
 </p>
 
+<p>Our system implements a server-client architecture based on the <a href="http://flask.pocoo.org/" title="Flask Python-based web development toolkit">Flask toolkit</a>. The client is purely web-based and consists of several linked views including a tweet view that shows the text of the tweet or conversation, an operation view that allows the workers to input entity content/type/comments, and a result view that shows the current entities and their links generated either by the machine or the worker. When the tweets are initially loaded into the system, the machined-generated results highlight. The workers can then recognize new entities or disambiguate/correct the current entities interactively. When the task is finished, the user can hit the submit button, with the system sending the results to the back-end server and store them in the database.</p>
 
 
 <h2>Evaluation method</h2>
@@ -267,68 +252,8 @@ As machine algorithms are more and more widely used in our world, they are becom
 From our evaluation, our crowd sourced system can greatly improve the recognition of entities in tweets comparing to the most popular machine algorithm.
 
 <h2>Acknowledgements</h2>
-We thank Prof. Alex Quinn for his great guidance and help on this course project.
-
-<br>
-<br>
-<br>
-<!-- <h2>Approach and Implementation</h2>
-
-<p style="text-align:center;"><img src="resources/project.PNG" alt="interface" style="width:720px;"><br>Fig 1. The mock-up interface of the approach.</p>
-
-<b>How to organize data?</b>
-<br>
-Our system will be based on a client-server architecture. The server captures the real-time Twitter stream based on a user-defined geographical box and send them to the client in real-time. A Twitter message can contain timestamp, user id, user name, geolocation and message content. 
-<br>
-<br>
-
-<b>What does the UI look like?</b>
-<br>
-There will be a tabular view to interact with the participants (Fig 1). The content of the tabular view includes a textbox, a table, a "Next" button and an "Update" field:
-The textbox shows a tweet assigned to the participant. These entities that have already been recognized by our system will be highlighted.
-The table lists every entity recognized in the tweet and these other entities potentially related with it. These "potentially related entities" are extracted from our database.
-<br>
-<br>
-If the participant is satisfied with the automatically generated result, he/she should click the "Next" button and get a new tweet. The result of the old tweet will be confirmed (explained in the question below). 
-Otherwise, the participant is asked to filled in the separate "Update" field. The layout of the field is similar to this: Keyword: <i>45</i>; Entity: <i>Trump</i>; Comment: <i>...</i>;  "Update" button.
-<br>
-<br>
-
-<b>How does the user interact with the system?</b>
-<br>
-If the participant click the "Next" button, our system will submit the result to our background. All unmodified result will increase its "Strength" attribute by 1. 
-If the participant add some new entities and connections, our system will use the time of the tweet, all the entities in the tweet and the comment to create a new entity. The connects are initialized with "Strength = 1".
-<br>
-<br>
-
-<b>How to update the data collected from participants?</b>
-<br>
-Each entity has connections with other entities. These connections are measured by their "Strength" attribute. When the participant agrees with an existing connection, its "Strength" value will be increased and vice versa. The connection will be deleted once its strength drops below some threshold.
-In the result page, these connection are shown in the order of their "Strength" value. 
-<br>
-<br>
-
-<b>How to review the workers' result?</b>
-<br>
-We provide two different views to show the result. In the tweet-centric view, we list all tweets that have been reviewed and tagged by the workers. For each tweet, we highlight the entities and their types that were edited by the workers. We also show additional entities that are related to the ones in the current tweet in another column.In the entity-centric view, we list all the entities that are recognized by the workers. For each entity, we visualize the different types and their percentage (confidence) using a pie chart. We also show entities relevant to the current one in another column. Finally, we provide user's comment/explanation in an extra column.
-<br>
-<br>
-
-<b>How to validate the approach?</b>
-<br>
-We will recruit 5-10 workers to recognize named-entities of real-time Twitter streams from a relative small region, so that the number of tweets won't be so many that would add cognitive overload to the users. The workers will be asked to work collaboratively. Each session will last for 20 minutes. The entities detected by the users will be compared with the automatic approaches.
-<br>
-<br>
-
-<h2>Evaluation and Results</h2>
-
-<h2>References</h2>
-<ul>
-  <li>Zhai, Haijun, et al. "Web 2.0-based crowdsourcing for high-quality gold standard development in clinical natural language processing." Journal of medical Internet research 15.4 (2013): e73.
-</li>
-  <li>Bontcheva, Kalina, Leon Derczynski, and Ian Roberts. "Crowdsourcing named entity recognition and entity linking corpora." The Handbook of Linguistic Annotation (2014).</li>
-  <li>Finin, Tim, et al. "Annotating named entities in Twitter data with crowdsourcing." Proceedings of the NAACL HLT 2010 Workshop on Creating Speech and Language Data with Amazon's Mechanical Turk. Association for Computational Linguistics, 2010.</li>
-</ul> -->
+<p>We thank Prof. Alex Quinn for his great guidance and valuable feedback on this course project.</p>
+<br><br>
 
 </body>
 </html>
